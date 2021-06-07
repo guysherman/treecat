@@ -5,7 +5,7 @@
     "build": "tsc --project ./tsconfig.json",
     "typecheck": "tsc --project ./tsconfig.json --noemit",
     "test": "jest --testPathIgnorePatterns=dist/",
-    "lint": "eslint src/**/*",
+    "lint": "eslint src/**/*.ts",
     "run-dev": "ts-node src/index.ts"
   },
   "devDependencies": {
@@ -17,6 +17,7 @@
     "eslint-config-standard": "latest",
     "eslint-import-resolver-node": "^0.3.4",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "jest": "^27.0.4",
@@ -30,6 +31,7 @@
     "@types/blessed": "^0.1.17",
     "@types/minimist": "^1.2.1",
     "@types/minimist-options": "^4.0.1",
+    "@yarnpkg/pnpify": "^3.0.0-rc.6",
     "blessed": "^0.1.81",
     "minimist": "^1.2.5",
     "minimist-options": "^4.1.0"
