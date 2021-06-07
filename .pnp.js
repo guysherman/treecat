@@ -53,9 +53,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-jest", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:24.3.6"],
             ["eslint-plugin-node", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:11.1.0"],
             ["eslint-plugin-promise", "npm:4.3.1"],
+            ["husky", "npm:6.0.0"],
             ["jest", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:27.0.4"],
             ["minimist", "npm:1.2.5"],
             ["minimist-options", "npm:4.1.0"],
+            ["pinst", "npm:2.1.6"],
             ["rimraf", "npm:3.0.2"],
             ["ts-jest", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:27.0.2"],
             ["ts-node", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:10.0.0"],
@@ -3745,6 +3747,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["fromentries", [
+        ["npm:1.3.2", {
+          "packageLocation": "./.yarn/cache/fromentries-npm-1.3.2-f5392090b8-5cc722e4e3.zip/node_modules/fromentries/",
+          "packageDependencies": [
+            ["fromentries", "npm:1.3.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["fs-minipass", [
         ["npm:2.1.0", {
           "packageLocation": "./.yarn/cache/fs-minipass-npm-2.1.0-501ef87306-e14a490658.zip/node_modules/fs-minipass/",
@@ -4108,6 +4119,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["humanize-ms", "npm:1.2.1"],
             ["ms", "npm:2.1.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["husky", [
+        ["npm:6.0.0", {
+          "packageLocation": "./.yarn/cache/husky-npm-6.0.0-384872ea98-61e1f7f53f.zip/node_modules/husky/",
+          "packageDependencies": [
+            ["husky", "npm:6.0.0"]
           ],
           "linkType": "HARD",
         }]
@@ -6138,6 +6158,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["pinst", [
+        ["npm:2.1.6", {
+          "packageLocation": "./.yarn/cache/pinst-npm-2.1.6-750cbdedeb-ac950620de.zip/node_modules/pinst/",
+          "packageDependencies": [
+            ["pinst", "npm:2.1.6"],
+            ["fromentries", "npm:1.3.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["pirates", [
         ["npm:4.0.1", {
           "packageLocation": "./.yarn/cache/pirates-npm-4.0.1-377058e8fc-21604008c3.zip/node_modules/pirates/",
@@ -6814,9 +6844,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-jest", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:24.3.6"],
             ["eslint-plugin-node", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:11.1.0"],
             ["eslint-plugin-promise", "npm:4.3.1"],
+            ["husky", "npm:6.0.0"],
             ["jest", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:27.0.4"],
             ["minimist", "npm:1.2.5"],
             ["minimist-options", "npm:4.1.0"],
+            ["pinst", "npm:2.1.6"],
             ["rimraf", "npm:3.0.2"],
             ["ts-jest", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:27.0.2"],
             ["ts-node", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:10.0.0"],
