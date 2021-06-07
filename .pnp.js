@@ -37,12 +37,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {
           "packageLocation": "./",
           "packageDependencies": [
+            ["@types/blessed", "npm:0.1.17"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/minimist", "npm:1.2.1"],
             ["@types/minimist-options", "npm:4.0.1"],
             ["@types/node", "npm:15.12.1"],
             ["@typescript-eslint/eslint-plugin", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:4.26.0"],
             ["@typescript-eslint/parser", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:4.26.0"],
+            ["blessed", "npm:0.1.81"],
             ["eslint", "npm:7.28.0"],
             ["eslint-config-standard", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:16.0.3"],
             ["eslint-import-resolver-node", "npm:0.3.4"],
@@ -1262,6 +1264,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/blessed", [
+        ["npm:0.1.17", {
+          "packageLocation": "./.yarn/cache/@types-blessed-npm-0.1.17-6f38d0b113-5844644d33.zip/node_modules/@types/blessed/",
+          "packageDependencies": [
+            ["@types/blessed", "npm:0.1.17"],
+            ["@types/node", "npm:15.12.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/graceful-fs", [
         ["npm:4.1.5", {
           "packageLocation": "./.yarn/cache/@types-graceful-fs-npm-4.1.5-91d62e1050-ab79ec306d.zip/node_modules/@types/graceful-fs/",
@@ -2026,6 +2038,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/balanced-match-npm-1.0.2-a53c126459-690643f300.zip/node_modules/balanced-match/",
           "packageDependencies": [
             ["balanced-match", "npm:1.0.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["blessed", [
+        ["npm:0.1.81", {
+          "packageLocation": "./.yarn/cache/blessed-npm-0.1.81-7da02fe8f4-92fcf39658.zip/node_modules/blessed/",
+          "packageDependencies": [
+            ["blessed", "npm:0.1.81"]
           ],
           "linkType": "HARD",
         }]
@@ -6039,12 +6060,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["sql-commander", "workspace:."],
+            ["@types/blessed", "npm:0.1.17"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/minimist", "npm:1.2.1"],
             ["@types/minimist-options", "npm:4.0.1"],
             ["@types/node", "npm:15.12.1"],
             ["@typescript-eslint/eslint-plugin", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:4.26.0"],
             ["@typescript-eslint/parser", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:4.26.0"],
+            ["blessed", "npm:0.1.81"],
             ["eslint", "npm:7.28.0"],
             ["eslint-config-standard", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:16.0.3"],
             ["eslint-import-resolver-node", "npm:0.3.4"],

@@ -792,6 +792,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/blessed@npm:^0.1.17":
+  version: 0.1.17
+  resolution: "@types/blessed@npm:0.1.17"
+  dependencies:
+    "@types/node": "*"
+  checksum: 5844644d3378d386e2b9412524b8304498af9036857e9a6082b01c0b956fb3be1ec462c4b4f0e8325194e56e70085b61a4c030797121a77bf509041f5d543d93
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.2":
   version: 4.1.5
   resolution: "@types/graceful-fs@npm:4.1.5"
@@ -1362,6 +1371,15 @@ __metadata:
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
   checksum: 690643f3009a04289ac401079de5a780aae452f7625fb2884051cc847b231e6521ee15dd6430b066d3cf4bd8bb00bb7ff55b7d134f34b8f0b8c043806796f94e
+  languageName: node
+  linkType: hard
+
+"blessed@npm:^0.1.81":
+  version: 0.1.81
+  resolution: "blessed@npm:0.1.81"
+  bin:
+    blessed: ./bin/tput.js
+  checksum: 92fcf3965851765aa47e6f7a9fca36a20dda2e104c1d0fe6c85c76eeee3b31e8e24a9fc173ae0e5b71e42c7da43e59bb1646f9b596366972f6768764eeb04698
   languageName: node
   linkType: hard
 
@@ -4841,12 +4859,14 @@ fsevents@^2.3.2:
   version: 0.0.0-use.local
   resolution: "sql-commander@workspace:."
   dependencies:
+    "@types/blessed": ^0.1.17
     "@types/jest": ^26.0.23
     "@types/minimist": ^1.2.1
     "@types/minimist-options": ^4.0.1
     "@types/node": ^15.12.1
     "@typescript-eslint/eslint-plugin": latest
     "@typescript-eslint/parser": latest
+    blessed: ^0.1.81
     eslint: ^7.28.0
     eslint-config-standard: latest
     eslint-import-resolver-node: ^0.3.4
