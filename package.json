@@ -6,10 +6,7 @@
     "typecheck": "tsc --project ./tsconfig.json --noemit",
     "test": "scripts/test-ci.sh",
     "lint": "eslint src/**/*.ts",
-    "run-dev": "ts-node src/index.ts",
-    "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "run-dev": "ts-node src/index.ts"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
