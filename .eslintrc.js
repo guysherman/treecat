@@ -18,5 +18,6 @@ module.exports = {
     'jest'
   ],
   rules: {
+    'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }]
   }
 }
