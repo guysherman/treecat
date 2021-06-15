@@ -11,6 +11,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.1",
+    "@types/pg": "^8.6.0",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "eslint": "^7.28.0",
@@ -35,6 +36,7 @@
     "@yarnpkg/pnpify": "^3.0.0-rc.6",
     "blessed": "^0.1.81",
     "minimist": "^1.2.5",
-    "minimist-options": "^4.1.0"
+    "minimist-options": "^4.1.0",
+    "pg": "^8.6.0"
   }
 }
