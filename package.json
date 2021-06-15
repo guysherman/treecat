@@ -4,7 +4,6 @@
     "clean": "rimraf ./dist",
     "build": "tsc --project ./tsconfig.json",
     "typecheck": "tsc --project ./tsconfig.json --noemit",
-    "test:all": "jest --testPathIgnorePatterns=dist/",
     "test": "scripts/test-ci.sh",
     "lint": "eslint src/**/*.ts",
     "run-dev": "ts-node src/index.ts",
