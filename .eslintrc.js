@@ -19,5 +19,6 @@ module.exports = {
   ],
   rules: {
     'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }]
-  }
+  },
+  ignorePatterns: ["knexfile.js"]
 }
