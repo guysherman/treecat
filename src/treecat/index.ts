@@ -26,6 +26,10 @@ function createTextElement (text: string) {
   }
 }
 
+function setTextContent (element: blessed.Widgets.BlessedElement, textContent: string) {
+  element.setContent(textContent)
+}
+
 export function render (element: TreeCatElementBase, container?: blessed.Widgets.Node) {
   console.log(JSON.stringify(element, null, '  '))
   if (!container) {
@@ -54,6 +58,9 @@ export function render (element: TreeCatElementBase, container?: blessed.Widgets
   let el: blessed.Widgets.Node
 
   switch (element.type) {
+    case 'TEXT_ELEMENT':
+      setTextContent(container as blessed.Widgets.BlessedElement, element.props.nodeValue)
+      return
     case 'Box':
     default:
       el = createNode<blessed.Widgets.BoxElement, blessed.Widgets.BoxOptions>(element, blessed.box)
