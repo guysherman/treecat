@@ -1,5 +1,5 @@
 import * as blessed from 'blessed'
-import { createScreen } from './baseComponents/screen'
+import { createNode } from './baseComponents'
 import { TreeCatElementBase } from './TreeCatElement'
 export function createElement (type: any, props: any, ...children: any) {
   return {
@@ -27,30 +27,40 @@ function createTextElement (text: string) {
 }
 
 export function render (element: TreeCatElementBase, container?: blessed.Widgets.Node) {
+  console.log(JSON.stringify(element, null, '  '))
   if (!container) {
     if (element.type !== 'Screen') {
       throw Error('Top-level TreeCatElement must be a <Screen />')
     }
 
-    const el: blessed.Widgets.Screen = createScreen(element)
+    const el: blessed.Widgets.Screen = createNode<blessed.Widgets.Screen, blessed.Widgets.IScreenOptions>(element, blessed.screen)
+
+    el.program.on('keypress', (_ch: string, key: blessed.Widgets.Events.IKeyEventArg) => {
+      if (key.full === 'C-c') {
+        process.exit(0)
+      }
+    })
 
     if (element.children) {
       element.children.forEach((value: TreeCatElementBase) => {
         render(value, el)
       })
     }
+
+    el.render()
   }
 
 
-  // let el: blessed.Widgets.Node
+  let el: blessed.Widgets.Node
 
-  // switch (element) {
-  // case 'Screen':
-  // el = createScreen(element)
-  // }
+  switch (element.type) {
+    case 'Box':
+    default:
+      el = createNode<blessed.Widgets.BoxElement, blessed.Widgets.BoxOptions>(element, blessed.box)
+  }
 
-  // if (!container) {
-
-  // }
+  if (container) {
+    container.append(el)
+  }
 }
 
