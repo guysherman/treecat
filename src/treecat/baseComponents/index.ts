@@ -1,11 +1,12 @@
 import * as blessed from 'blessed'
-import { TreeCatElement } from '../TreeCatElement'
+import { Fiber } from '../Fiber'
 
 export type NodeCreator<TNode> = (options: any | undefined) => TNode
 
-export function createNode<TNode, TNodeOptions> (element: TreeCatElement<TNodeOptions>, fnCreate: NodeCreator<TNode>): TNode {
+export function createNode<TNode, TNodeOptions> (element: Fiber, fnCreate: NodeCreator<TNode>): TNode {
   // eslint-disable-next-line no-unused-vars
-  const node = fnCreate({ ...(element.props) })
+  const { props } = element
+  const node = fnCreate({ ...(props as TNodeOptions) })
   return node
 }
 
