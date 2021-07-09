@@ -1,11 +1,14 @@
 import * as blessed from 'blessed'
-import { argv0 } from 'process'
 import { createNode } from './baseComponents'
+import { ElementDescription } from './ElementDescription'
 import { Fiber } from './Fiber'
 
-let nextUnitOfWork: Fiber | null = null
+let nextUnitOfWork: Fiber | null
+let wipRoot: Fiber | null
+let currentRoot: Fiber | null
+let blessedRoot: blessed.Widgets.Screen | null
 
-export function createElement (type: any, props: any, ...children: any): Fiber {
+export function createElement (type: any, props: any, ...children: any): ElementDescription {
   return {
     type: type.name,
     props: {
@@ -16,24 +19,17 @@ export function createElement (type: any, props: any, ...children: any): Fiber {
           : createTextElement(child)
       )
 
-    },
-    parent: null,
-    child: null,
-    sibling: null
-
+    }
   }
 }
 
-function createTextElement (text: string): Fiber {
+function createTextElement (text: string): ElementDescription {
   return {
     type: 'TEXT_ELEMENT',
     props: {
       nodeValue: text,
       children: []
-    },
-    parent: null,
-    child: null,
-    sibling: null
+    }
   }
 }
 
@@ -41,19 +37,13 @@ function createTextElement (text: string): Fiber {
 // element.setContent(textContent)
 // }
 
-export function render (element: TreeCatElementBase, container?: blessed.Widgets.Node) {
+export function render (element: ElementDescription, container: blessed.Widgets.Screen) {
   console.log(JSON.stringify(element, null, '  '))
   // if (!container) {
   // if (element.type !== 'Screen') {
   // throw Error('Top-level TreeCatElement must be a <Screen />')
   // }
 
-
-  // el.program.on('keypress', (_ch: string, key: blessed.Widgets.Events.IKeyEventArg) => {
-  // if (key.full === 'C-c') {
-  // process.exit(0)
-  // }
-  // })
 
   // if (element.children) {
   // element.children.forEach((value: TreeCatElementBase) => {
@@ -69,29 +59,35 @@ export function render (element: TreeCatElementBase, container?: blessed.Widgets
   // container.append(el)
   // }
   //
-  nextUnitOfWork = {
+  blessedRoot = container
+  wipRoot = {
     dom: container,
     props: {
       children: [element]
     },
-    parent: null,
-    child: null,
-    sibling: null
+    alternate: currentRoot
   }
+
+  nextUnitOfWork = wipRoot
+  // setImmediate(() => workLoop())
+  workLoop()
 }
 
 
 // eslint-disable-next-line no-unused-vars
-function createDom (fiber: Fiber): blessed.Widgets.Node {
+function createDom (fiber: Fiber): blessed.Widgets.Node | undefined {
   let el: blessed.Widgets.Node
   switch (fiber.type) {
     case 'Screen':
       el = createNode<blessed.Widgets.Screen, blessed.Widgets.IScreenOptions>(fiber, blessed.screen)
       break
     case 'Box':
-    default:
       el = createNode<blessed.Widgets.BoxElement, blessed.Widgets.BoxOptions>(fiber, blessed.box)
       break
+    case 'TEXT_ELEMENT':
+    default:
+      (fiber?.parent?.dom as blessed.Widgets.BlessedElement)?.setContent(fiber.props.nodeValue)
+      return
   }
 
   return el
@@ -99,9 +95,19 @@ function createDom (fiber: Fiber): blessed.Widgets.Node {
 
 
 function workLoop () {
+  // const start: number = Date.now()
+  // let shouldYield: boolean = false
   while (nextUnitOfWork) {
     nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
+    // const now: number = Date.now()
+    // shouldYield = now - start > 16
   }
+
+  if (!nextUnitOfWork && wipRoot) {
+    commitRoot()
+  }
+
+  // setImmediate(() => workLoop())
 }
 
 
@@ -110,9 +116,6 @@ function performUnitOfWork (fiber: Fiber) {
     fiber.dom = createDom(fiber)
   }
 
-  if (fiber.parent) {
-    fiber.parent.dom!.append(fiber.dom)
-  }
 
   const elements: Fiber[] = fiber.props.children
   let index: number = 0
@@ -123,8 +126,7 @@ function performUnitOfWork (fiber: Fiber) {
 
     const newFiber = {
       ...element,
-      parent: fiber,
-      dom: null
+      parent: fiber
     }
 
     if (index === 0) {
@@ -145,6 +147,29 @@ function performUnitOfWork (fiber: Fiber) {
     if (nextFiber.sibling) {
       return nextFiber.sibling
     }
-    nextFiber = nextFiber.parent
+    nextFiber = nextFiber?.parent ?? null
   }
+
+  return nextFiber
+}
+
+function commitRoot () {
+  commitWork(wipRoot?.child ?? null)
+  currentRoot = wipRoot
+  wipRoot = null
+  blessedRoot?.render()
+}
+
+function commitWork (fiber: Fiber | null) {
+  if (!fiber) {
+    return
+  }
+
+  if (fiber.dom && fiber?.parent?.dom) {
+    const domParent: blessed.Widgets.Node = fiber.parent.dom
+    domParent.append(fiber.dom as blessed.Widgets.Node)
+  }
+
+  commitWork(fiber.child ?? null)
+  commitWork(fiber.sibling ?? null)
 }

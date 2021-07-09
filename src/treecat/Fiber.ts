@@ -1,11 +1,11 @@
 import * as blessed from 'blessed'
+import { ElementDescription } from './ElementDescription'
 
-export type Fiber = {
-  dom?: blessed.Widgets.Node | null;
-  type?: string;
-  props?: any & { children: Fiber[] };
-  parent: Fiber | null;
-  child: Fiber | null;
-  sibling: Fiber | null;
+export type Fiber = ElementDescription & {
+  dom?: blessed.Widgets.Node;
+  parent?: Fiber;
+  child?: Fiber;
+  sibling?: Fiber;
+  alternate?: Fiber | null;
 }
 

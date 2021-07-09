@@ -4,9 +4,10 @@ import { Fiber } from '../Fiber'
 export type NodeCreator<TNode> = (options: any | undefined) => TNode
 
 export function createNode<TNode, TNodeOptions> (element: Fiber, fnCreate: NodeCreator<TNode>): TNode {
+  console.log(`createNode: ${element.type}`)
   // eslint-disable-next-line no-unused-vars
-  const { props } = element
-  const node = fnCreate({ ...(props as TNodeOptions) })
+  const { props: { children, ...options } } = element
+  const node = fnCreate({ ...(options as TNodeOptions) })
   return node
 }
 
