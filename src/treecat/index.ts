@@ -7,10 +7,24 @@ let nextUnitOfWork: Fiber | null
 let wipRoot: Fiber | null
 let currentRoot: Fiber | null
 let blessedRoot: blessed.Widgets.Screen | null
+// const deletions: Fiber[] = []
+
+// const isEvent = key => key.startsWith('on')
+// const isProperty = key => key !== 'children' && !isEvent(key)
+// const isNew = (prev, next) => key => prev[key] !== next[key]
+// const isGone = (prev, next) => key => !(key in next)
+
+// eslint-disable-next-line no-unused-vars
+export namespace JSX {
+  // eslint-disable-next-line no-unused-vars
+  export interface IntrinsicElements {
+    box: any;
+  }
+}
 
 export function createElement (type: any, props: any, ...children: any): ElementDescription {
   return {
-    type: type.name,
+    type: type,
     props: {
       ...props,
       children: children.map((child: any) =>
@@ -23,6 +37,7 @@ export function createElement (type: any, props: any, ...children: any): Element
   }
 }
 
+
 function createTextElement (text: string): ElementDescription {
   return {
     type: 'TEXT_ELEMENT',
@@ -33,32 +48,9 @@ function createTextElement (text: string): ElementDescription {
   }
 }
 
-// function setTextContent (element: blessed.Widgets.BlessedElement, textContent: string) {
-// element.setContent(textContent)
-// }
 
 export function render (element: ElementDescription, container: blessed.Widgets.Screen) {
   console.log(JSON.stringify(element, null, '  '))
-  // if (!container) {
-  // if (element.type !== 'Screen') {
-  // throw Error('Top-level TreeCatElement must be a <Screen />')
-  // }
-
-
-  // if (element.children) {
-  // element.children.forEach((value: TreeCatElementBase) => {
-  // render(value, el)
-  // })
-  // }
-
-  // el.render()
-  // }
-
-
-  // if (container) {
-  // container.append(el)
-  // }
-  //
   blessedRoot = container
   wipRoot = {
     dom: container,
@@ -69,8 +61,7 @@ export function render (element: ElementDescription, container: blessed.Widgets.
   }
 
   nextUnitOfWork = wipRoot
-  // setImmediate(() => workLoop())
-  workLoop()
+  setImmediate(() => workLoop())
 }
 
 
@@ -78,10 +69,10 @@ export function render (element: ElementDescription, container: blessed.Widgets.
 function createDom (fiber: Fiber): blessed.Widgets.Node | undefined {
   let el: blessed.Widgets.Node
   switch (fiber.type) {
-    case 'Screen':
+    case 'screen':
       el = createNode<blessed.Widgets.Screen, blessed.Widgets.IScreenOptions>(fiber, blessed.screen)
       break
-    case 'Box':
+    case 'box':
       el = createNode<blessed.Widgets.BoxElement, blessed.Widgets.BoxOptions>(fiber, blessed.box)
       break
     case 'TEXT_ELEMENT':
@@ -95,19 +86,19 @@ function createDom (fiber: Fiber): blessed.Widgets.Node | undefined {
 
 
 function workLoop () {
-  // const start: number = Date.now()
-  // let shouldYield: boolean = false
-  while (nextUnitOfWork) {
+  const start: number = Date.now()
+  let shouldYield: boolean = false
+  while (nextUnitOfWork && !shouldYield) {
     nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
-    // const now: number = Date.now()
-    // shouldYield = now - start > 16
+    const now: number = Date.now()
+    shouldYield = now - start > 16
   }
 
   if (!nextUnitOfWork && wipRoot) {
     commitRoot()
   }
 
-  // setImmediate(() => workLoop())
+  setImmediate(() => workLoop())
 }
 
 
