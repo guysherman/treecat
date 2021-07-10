@@ -26,3 +26,33 @@ test('box with text', () => {
 
   expect(nodeValue).toEqual('HelloWorld')
 })
+
+test('box with props', () => {
+  const tree = <box border={'line' as const} width="50%" height="50%" left="center" top="center" />
+
+  const {
+    props: {
+      border,
+      width,
+      height,
+      left,
+      top
+    }
+  } = tree
+
+  expect(border).toEqual('line')
+  expect(width).toEqual('50%')
+  expect(height).toEqual('50%')
+  expect(left).toEqual('center')
+  expect(top).toEqual('center')
+})
+
+test('box in a box', () => {
+  const tree = <box>
+                <box />
+              </box>
+
+  const { props: { children: [child] } } = tree
+
+  expect(child.type).toEqual('box')
+})
