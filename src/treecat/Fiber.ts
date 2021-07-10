@@ -7,5 +7,6 @@ export type Fiber = ElementDescription & {
   child?: Fiber;
   sibling?: Fiber;
   alternate?: Fiber | null;
+  effectTag?: string;
 }
 

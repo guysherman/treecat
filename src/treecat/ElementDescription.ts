@@ -1,5 +1,5 @@
 export type ElementDescription = {
-  type?: string;
+  type?: any;
   props: any & {
     children: ElementDescription[]
   }

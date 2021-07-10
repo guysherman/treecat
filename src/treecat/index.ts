@@ -2,51 +2,13 @@ import * as blessed from 'blessed'
 import { createNode } from './baseComponents'
 import { ElementDescription } from './ElementDescription'
 import { Fiber } from './Fiber'
+export { createElement, JSX } from './jsx'
 
 let nextUnitOfWork: Fiber | null
 let wipRoot: Fiber | null
 let currentRoot: Fiber | null
 let blessedRoot: blessed.Widgets.Screen | null
-// const deletions: Fiber[] = []
-
-// const isEvent = key => key.startsWith('on')
-// const isProperty = key => key !== 'children' && !isEvent(key)
-// const isNew = (prev, next) => key => prev[key] !== next[key]
-// const isGone = (prev, next) => key => !(key in next)
-
-// eslint-disable-next-line no-unused-vars
-export namespace JSX {
-  // eslint-disable-next-line no-unused-vars
-  export interface IntrinsicElements {
-    box: any;
-  }
-}
-
-export function createElement (type: any, props: any, ...children: any): ElementDescription {
-  return {
-    type: type,
-    props: {
-      ...props,
-      children: children.map((child: any) =>
-        typeof child === 'object'
-          ? child
-          : createTextElement(child)
-      )
-
-    }
-  }
-}
-
-
-function createTextElement (text: string): ElementDescription {
-  return {
-    type: 'TEXT_ELEMENT',
-    props: {
-      nodeValue: text,
-      children: []
-    }
-  }
-}
+const deletions: Fiber[] = []
 
 
 export function render (element: ElementDescription, container: blessed.Widgets.Screen) {
@@ -109,26 +71,8 @@ function performUnitOfWork (fiber: Fiber) {
 
 
   const elements: Fiber[] = fiber.props.children
-  let index: number = 0
-  let prevSibling: Fiber | null = null
+  reconcileChildren(fiber, elements)
 
-  while (index < elements.length) {
-    const element = elements[index]
-
-    const newFiber = {
-      ...element,
-      parent: fiber
-    }
-
-    if (index === 0) {
-      fiber.child = newFiber
-    } else {
-      prevSibling!.sibling = newFiber
-    }
-
-    prevSibling = newFiber
-    index++
-  }
   if (fiber.child) {
     return fiber.child
   }
@@ -144,7 +88,56 @@ function performUnitOfWork (fiber: Fiber) {
   return nextFiber
 }
 
+function reconcileChildren (wipFiber: Fiber, elements: Fiber[]) {
+  let index: number = 0
+  let oldFiber: Fiber | null = wipFiber?.alternate?.child ?? null
+  let prevSibling: Fiber | null = null
+
+  while (index < elements.length || oldFiber !== null) {
+    const element = elements[index]
+    let newFiber: Fiber | null = null
+    // eslint-disable-next-line eqeqeq
+    const sameType = oldFiber && element && element.type == oldFiber.type
+
+    if (sameType) {
+      newFiber = {
+        type: oldFiber?.type,
+        props: element.props,
+        parent: wipFiber,
+        alternate: oldFiber,
+        effectTag: 'UPDATE'
+      }
+    }
+
+    if (element && !sameType) {
+      newFiber = {
+        ...element,
+        parent: wipFiber,
+        effectTag: 'PLACEMENT'
+      }
+    }
+
+    if (oldFiber && !sameType) {
+      oldFiber.effectTag = 'DELETION'
+      deletions.push(oldFiber)
+    }
+
+    if (oldFiber) {
+      oldFiber = oldFiber.sibling ?? null
+    }
+    if (index === 0) {
+      wipFiber.child = newFiber ?? undefined
+    } else {
+      prevSibling!.sibling = newFiber ?? undefined
+    }
+
+    prevSibling = newFiber
+    index++
+  }
+}
+
 function commitRoot () {
+  deletions.forEach(commitWork)
   commitWork(wipRoot?.child ?? null)
   currentRoot = wipRoot
   wipRoot = null
@@ -155,12 +148,26 @@ function commitWork (fiber: Fiber | null) {
   if (!fiber) {
     return
   }
+  const domParent: blessed.Widgets.Node | null = fiber?.parent?.dom ?? null
 
-  if (fiber.dom && fiber?.parent?.dom) {
-    const domParent: blessed.Widgets.Node = fiber.parent.dom
-    domParent.append(fiber.dom as blessed.Widgets.Node)
+  if (domParent && fiber?.dom) {
+    if (fiber.effectTag === 'PLACEMENT') {
+      domParent.append(fiber.dom as blessed.Widgets.Node)
+    } else if (fiber.effectTag === 'UPDATE' &&
+               fiber?.alternate?.dom) {
+      const childNodes: blessed.Widgets.Node[] = [...(fiber.alternate.dom.children)]
+      for (let i = 0; i < childNodes.length; i++) {
+        const cn: blessed.Widgets.Node = childNodes[0]
+        cn.detach()
+        fiber.dom.append(cn)
+      }
+      domParent.append(fiber.dom as blessed.Widgets.Node)
+    } else if (fiber.effectTag === 'DELETION') {
+      domParent.remove(fiber!.dom as blessed.Widgets.Node)
+    }
   }
 
   commitWork(fiber.child ?? null)
   commitWork(fiber.sibling ?? null)
 }
+
