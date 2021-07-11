@@ -9,7 +9,7 @@ let inStream: fs.ReadStream
 
 beforeEach(() => {
   jest.useFakeTimers()
-  outStream = fs.createWriteStream('./out')
+  outStream = fs.createWriteStream('./.scratch/out')
   inStream = fs.createReadStream('/dev/random')
   rootScreen = blessed.screen({ output: inStream, input: outStream })
 })
