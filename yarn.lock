@@ -944,7 +944,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^15.12.1":
+"@types/node@npm:*":
   version: 15.12.1
   resolution: "@types/node@npm:15.12.1"
   checksum: 8a111dc99281e07b1a6408437a09eafb081760aa8bd73d481793345b302a565772c45f2be7fdd7386a8a7ce589a999ccfb513dba15a0b3320dba03c94308253f
@@ -955,6 +955,13 @@ __metadata:
   version: 13.13.52
   resolution: "@types/node@npm:13.13.52"
   checksum: 702db7930d333cc56e38d1ffb0ac394c2ccaae3be41ad6d92d84e5225f2ccf7a69fc19bd9eceafd0c00189876add6464460c5fd47ce4bdc14f6f9b0a7212aee0
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.3.1":
+  version: 16.3.1
+  resolution: "@types/node@npm:16.3.1"
+  checksum: 2021138afd66a9235f4b64e412dd8a8d1199f3d17303c2868ab062a10214ba76b793bf4f59e14c3bf981623e099843855776390b445d840779cb171c2fcb97a9
   languageName: node
   linkType: hard
 
@@ -5778,7 +5785,7 @@ fsevents@^2.3.2:
     "@types/knex": ^0.16.1
     "@types/minimist": ^1.2.1
     "@types/minimist-options": ^4.0.1
-    "@types/node": ^15.12.1
+    "@types/node": ^16.3.1
     "@types/pg": ^8.6.0
     "@typescript-eslint/eslint-plugin": latest
     "@typescript-eslint/parser": latest

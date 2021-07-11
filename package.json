@@ -12,7 +12,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.23",
     "@types/knex": "^0.16.1",
-    "@types/node": "^15.12.1",
+    "@types/node": "^16.3.1",
     "@types/pg": "^8.6.0",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
