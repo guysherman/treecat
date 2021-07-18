@@ -7,7 +7,7 @@
     "test": "scripts/test-ci.sh",
     "test:treecat": "jest --testPathPattern=src/treecat/ --testPathIgnorePatterns=dist/",
     "lint": "eslint src/**/*.ts",
-    "run-dev": "ts-node src/index.ts"
+    "run-dev": "ts-node src/index.tsx"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",

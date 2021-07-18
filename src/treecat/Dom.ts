@@ -49,9 +49,13 @@ export function commitWork (fiber: Fiber | null) {
         cn.detach()
         fiber.dom.append(cn)
       }
-
+      const isFocused = fiber.alternate.dom.screen.focused === fiber.alternate.dom
       domParent.remove(fiber.alternate.dom as blessed.Widgets.Node)
       domParent.append(fiber.dom as blessed.Widgets.Node)
+      if (isFocused) {
+        console.log('should be focused! :(')
+        fiber.dom.screen.focused = fiber.dom as blessed.Widgets.BlessedElement
+      }
     } else if (fiber.effectTag === 'DELETION') {
       commitDelete(fiber, domParent)
     }

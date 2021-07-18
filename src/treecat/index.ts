@@ -1,14 +1,16 @@
 import * as blessed from 'blessed'
 import { ElementDescription } from './ElementDescription'
-import { Fiber, performUnitOfWork } from './Fiber'
+import { Fiber, Hook, performUnitOfWork } from './Fiber'
 import { commitWork } from './Dom'
 export { createElement, JSX } from './jsx'
 
 let nextUnitOfWork: Fiber | null
 let wipRoot: Fiber | null
+let wipFiber: Fiber | null
+let hookIndex: number = 0
 let currentRoot: Fiber | null
 let blessedRoot: blessed.Widgets.Screen | null
-const deletions: Fiber[] = []
+let deletions: Fiber[] = []
 let shouldStopWorkloop: boolean = false
 let workLoopResolve: any = null
 
@@ -35,17 +37,41 @@ export async function stopRendering (): Promise<void> {
   return p
 }
 
+export function useState (initial: any): [any, (action: (...args: any[]) => any) => void] {
+  const oldHook: Hook | null = wipFiber?.alternate?.hooks?.[hookIndex] ?? null
+  const hook: Hook = {
+    state: oldHook?.state ?? initial,
+    queue: []
+  }
+
+  const actions = oldHook?.queue ?? []
+  actions.forEach(action => {
+    hook.state = action(hook.state)
+  })
+
+  const setState = (action: (...args: any[]) => any): void => {
+    hook.queue.push(action)
+    wipRoot = {
+      dom: currentRoot?.dom,
+      props: currentRoot?.props,
+      alternate: currentRoot
+    }
+
+    nextUnitOfWork = wipRoot
+    deletions = []
+  }
+
+  wipFiber?.hooks?.push(hook)
+  hookIndex++
+  return [hook.state, setState]
+}
+
 
 function workLoop () {
-  const start: number = Date.now()
-  let shouldYield: boolean = false
-  while (nextUnitOfWork && !shouldYield) {
-    const [workUnit, localDeletions] = performUnitOfWork(nextUnitOfWork)
+  while (nextUnitOfWork) {
+    const [workUnit, localDeletions] = performUnitOfWork(nextUnitOfWork, setWipFiber, resetHookIndex)
     deletions.push(...localDeletions)
     nextUnitOfWork = workUnit
-
-    const now: number = Date.now()
-    shouldYield = now - start > 16
   }
 
   if (!nextUnitOfWork && wipRoot) {
@@ -55,10 +81,17 @@ function workLoop () {
   if (!nextUnitOfWork && !wipRoot && shouldStopWorkloop) {
     workLoopResolve()
   } else {
-    setImmediate(() => workLoop())
+    setTimeout(() => workLoop(), 30)
   }
 }
 
+function setWipFiber (fiber: Fiber | null): void {
+  wipFiber = fiber
+}
+
+function resetHookIndex (): void {
+  hookIndex = 0
+}
 
 function commitRoot () {
   deletions.forEach(commitWork)

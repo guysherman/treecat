@@ -2,6 +2,11 @@ import * as blessed from 'blessed'
 import { ElementDescription } from './ElementDescription'
 import { createDom } from './Dom'
 
+export type Hook = {
+  state: any;
+  queue: ((...args: any[]) => any)[];
+
+}
 export type Fiber = ElementDescription & {
   dom?: blessed.Widgets.Node;
   parent?: Fiber;
@@ -9,13 +14,14 @@ export type Fiber = ElementDescription & {
   sibling?: Fiber;
   alternate?: Fiber | null;
   effectTag?: string;
+  hooks?: Hook[];
 }
 
-export function performUnitOfWork (fiber: Fiber): [Fiber | null, Fiber[]] {
+export function performUnitOfWork (fiber: Fiber, setWipFiber: (fiber: Fiber) => void, resetHookIndex: () => void): [Fiber | null, Fiber[]] {
   let localDeletions: Fiber[]
 
   if (fiber.type instanceof Function) {
-    localDeletions = updateFunctionComponent(fiber)
+    localDeletions = updateFunctionComponent(fiber, setWipFiber, resetHookIndex)
   } else {
     localDeletions = updateHostComponent(fiber)
   }
@@ -35,7 +41,10 @@ export function performUnitOfWork (fiber: Fiber): [Fiber | null, Fiber[]] {
   return [nextFiber, localDeletions]
 }
 
-function updateFunctionComponent (fiber: Fiber): Fiber[] {
+function updateFunctionComponent (fiber: Fiber, setWipFiber: (fiber: Fiber) => void, resetHookIndex: () => void): Fiber[] {
+  fiber.hooks = []
+  setWipFiber(fiber)
+  resetHookIndex()
   const children = [fiber.type(fiber.props)]
   const localDeletions: Fiber[] = reconcileChildren(fiber, children)
   return localDeletions

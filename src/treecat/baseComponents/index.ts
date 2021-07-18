@@ -20,6 +20,11 @@ export function createNode<TNode extends blessed.Widgets.Node, TNodeOptions> (el
     options[key] = element.props[key]
   })
 
+  const focused = element?.alternate?.dom?.screen.focused === element?.alternate?.dom
+  if (focused) {
+    options.focused = true
+  }
+
   const node = fnCreate({ ...(options as TNodeOptions) })
 
   Object.keys(element.props).filter(isEvent).forEach((key) => {

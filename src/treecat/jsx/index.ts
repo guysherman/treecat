@@ -29,7 +29,7 @@ function createTextElement (text: string): ElementDescription {
   return {
     type: 'TEXT_ELEMENT',
     props: {
-      nodeValue: text,
+      nodeValue: `${text}`,
       children: []
     }
   }
