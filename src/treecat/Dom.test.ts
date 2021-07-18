@@ -82,6 +82,30 @@ test('createDom - box with text', () => {
   expect(box!.content).toEqual('Some Text')
 })
 
+test('createDom - box with event', () => {
+  let i: number = 0
+
+  const keypress: any = (_ch: string, key: blessed.Widgets.Events.IKeyEventArg) => {
+    if (key.full === 'S-a') {
+      i++
+    }
+  }
+
+  const f: Fiber = {
+    type: 'box',
+    props: {
+      onkeypress: keypress,
+      children: []
+    }
+  }
+
+  const node: blessed.Widgets.Node | null = createDom(f) ?? null
+
+  node!.emit('keypress', 'A', { sequence: 'A', name: 'a', ctrl: false, meta: false, shift: true, full: 'S-a' })
+  jest.runAllTimers()
+  expect(i).toBe(1)
+})
+
 test('commitWork - simple box - placement', () => {
   const a: Fiber = {
     dom: rootScreen,

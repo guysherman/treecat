@@ -70,6 +70,7 @@ function commitDelete (fiber: Fiber | null, domParent: blessed.Widgets.Node) {
 
   if (fiber?.dom) {
     domParent.remove(fiber!.dom as blessed.Widgets.Node)
+    fiber.dom.destroy()
   } else {
     commitDelete(fiber?.child ?? null, domParent)
   }
