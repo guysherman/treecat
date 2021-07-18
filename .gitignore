@@ -12,3 +12,5 @@
 dist/
 .vscode/
 .scratch/
+
+coverage/
