@@ -26,6 +26,24 @@ test('simple box', async () => {
   expect(box).toBeTruthy()
 })
 
+// eslint-disable-next-line no-unused-vars
+function TestFC () {
+  return <box />
+}
+
+test('simple function component', async () => {
+  const tree = <TestFC />
+  TreeCat.render(tree, rootScreen)
+
+  const p: Promise<void> = TreeCat.stopRendering()
+  jest.runAllTimers()
+  await p.then(() => true)
+
+  const { children: [box] } = rootScreen
+
+  expect(box).toBeTruthy()
+})
+
 afterEach(() => {
   rootScreen.destroy()
   outStream.close()

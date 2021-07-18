@@ -12,13 +12,13 @@ export type Fiber = ElementDescription & {
 }
 
 export function performUnitOfWork (fiber: Fiber): [Fiber | null, Fiber[]] {
-  if (!fiber.dom) {
-    fiber.dom = createDom(fiber)
+  let localDeletions: Fiber[]
+
+  if (fiber.type instanceof Function) {
+    localDeletions = updateFunctionComponent(fiber)
+  } else {
+    localDeletions = updateHostComponent(fiber)
   }
-
-
-  const elements: Fiber[] = fiber.props.children
-  const localDeletions: Fiber[] = reconcileChildren(fiber, elements)
 
   if (fiber.child) {
     return [fiber.child, localDeletions]
@@ -33,6 +33,22 @@ export function performUnitOfWork (fiber: Fiber): [Fiber | null, Fiber[]] {
   }
 
   return [nextFiber, localDeletions]
+}
+
+function updateFunctionComponent (fiber: Fiber): Fiber[] {
+  const children = [fiber.type(fiber.props)]
+  const localDeletions: Fiber[] = reconcileChildren(fiber, children)
+  return localDeletions
+}
+
+function updateHostComponent (fiber: Fiber): Fiber[] {
+  if (!fiber.dom) {
+    fiber.dom = createDom(fiber)
+  }
+
+  const elements: Fiber[] = fiber.props.children
+  const localDeletions: Fiber[] = reconcileChildren(fiber, elements)
+  return localDeletions
 }
 
 function reconcileChildren (wipFiber: Fiber, elements: Fiber[]): Fiber[] {
