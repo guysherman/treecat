@@ -25,7 +25,9 @@ export function createNode<TNode extends blessed.Widgets.Node, TNodeOptions> (el
     options.focused = true
   }
 
+
   const node = fnCreate({ ...(options as TNodeOptions) })
+
 
   Object.keys(element.props).filter(isEvent).forEach((key) => {
     const eventName = key.substring(eventPrefix.length)
