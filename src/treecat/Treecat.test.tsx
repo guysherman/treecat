@@ -56,7 +56,7 @@ function Counter () {
     }
   }
 
-  return <box><box onkeypress={kp}>{ state }</box></box>
+  return <box><box focused={true} onkeypress={kp}>{ state }</box></box>
 }
 
 test('simple counter example', async () => {
@@ -70,7 +70,7 @@ test('simple counter example', async () => {
   expect(el).toBeTruthy()
   expect(el!.content).toEqual('1')
 
-  el.focus()
+  // el.focus()
   el!.emit('keypress', '+', { sequence: '+', name: '+', ctrl: false, meta: false, shift: true, full: '+' })
   jest.runOnlyPendingTimers()
   jest.runOnlyPendingTimers()
