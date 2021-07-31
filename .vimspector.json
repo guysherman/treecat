@@ -7,7 +7,7 @@
         "protocol": "auto",
         "stopOnEntry": true,
         "console": "integratedTerminal",
-        "program": "${workspaceRoot}/src/index.ts",
+        "program": "${workspaceRoot}/src/index.tsx",
         "runtimeExecutable": "node",
         "runtimeArgs": ["--require", "${workspaceRoot}/.pnp.js"],
         "cwd": "${workspaceRoot}",
