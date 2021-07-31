@@ -110,7 +110,10 @@ export function commitWork (fiber: Fiber | null) {
   const domParent: blessed.Widgets.Node | null = domParentFiber?.dom ?? null
   if (domParent) {
     if (fiber.effectTag === 'PLACEMENT' && fiber.dom) {
-      domParent.append(fiber.dom as blessed.Widgets.Node)
+      domParent.append(fiber.dom)
+      if (fiber.props.focused) {
+        (fiber.dom as blessed.Widgets.BlessedElement).focus()
+      }
     } else if (fiber.effectTag === 'UPDATE' && fiber?.alternate?.dom && fiber.dom) {
       const childNodes: blessed.Widgets.Node[] = [...(fiber.alternate.dom.children)]
 
