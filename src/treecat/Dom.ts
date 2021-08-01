@@ -3,8 +3,8 @@ import { Fiber } from './Fiber'
 import { createNode } from './baseComponents'
 
 // eslint-disable-next-line no-unused-vars
-export function createDom (fiber: Fiber): blessed.Widgets.Node | undefined {
-  let el: blessed.Widgets.Node
+export function createDom (fiber: Fiber): blessed.Widgets.BlessedElement | undefined {
+  let el: blessed.Widgets.BlessedElement
   switch (fiber.type) {
     case 'screen':
       throw Error('Creating screens via JSX is not supported')
@@ -72,8 +72,11 @@ export function createDom (fiber: Fiber): blessed.Widgets.Node | undefined {
       el = createNode<blessed.Widgets.TableElement, blessed.Widgets.TableOptions>(fiber, blessed.table)
       break
     case 'TEXT_ELEMENT':
-      if (fiber?.parent?.dom as blessed.Widgets.BlessedElement) {
-        (fiber!.parent!.dom as blessed.Widgets.BlessedElement)!.setContent(fiber.props.nodeValue)
+      if (fiber?.parent?.dom) {
+        const parentElement = fiber.parent.dom as blessed.Widgets.BlessedElement
+        if (parentElement) {
+          parentElement.setContent(fiber.props.nodeValue)
+        }
         return
       } else {
         throw Error('Text can only exist as a child of a BlessedElement')
@@ -85,11 +88,11 @@ export function createDom (fiber: Fiber): blessed.Widgets.Node | undefined {
   return el
 }
 
-function createList (fiber: Fiber): blessed.Widgets.Node {
+function createList (fiber: Fiber): blessed.Widgets.BlessedElement {
   const el = createNode<blessed.Widgets.ListElement, blessed.Widgets.ListOptions<any>>(fiber, blessed.list)
   const selected = (fiber?.alternate?.dom as any)?.selected ?? null
   if (selected) {
-    (el as blessed.Widgets.ListElement).select(selected)
+    el.select(selected)
   }
 
   return el
@@ -107,6 +110,7 @@ export function commitWork (fiber: Fiber | null) {
       return
     }
   }
+
   const domParent: blessed.Widgets.Node | null = domParentFiber?.dom ?? null
   if (domParent) {
     if (fiber.effectTag === 'PLACEMENT' && fiber.dom) {
@@ -122,10 +126,9 @@ export function commitWork (fiber: Fiber | null) {
         cn.detach()
         fiber.dom.append(cn)
       }
-      const isFocused = fiber.alternate.dom.screen.focused === fiber.alternate.dom
-      domParent.remove(fiber.alternate.dom as blessed.Widgets.Node)
-      domParent.append(fiber.dom as blessed.Widgets.Node)
-      if (isFocused) {
+      domParent.remove(fiber.alternate.dom)
+      domParent.append(fiber.dom)
+      if (fiber.props.focused) {
         console.log('should be focused! :(')
         fiber.dom.screen.focused = fiber.dom as blessed.Widgets.BlessedElement
       }
@@ -145,8 +148,8 @@ function commitDelete (fiber: Fiber | null, domParent: blessed.Widgets.Node) {
     return
   }
 
-  if (fiber?.dom) {
-    domParent.remove(fiber!.dom as blessed.Widgets.Node)
+  if (fiber.dom) {
+    domParent.remove(fiber.dom)
     fiber.dom.destroy()
   } else {
     commitDelete(fiber?.child ?? null, domParent)
