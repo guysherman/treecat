@@ -1,6 +1,7 @@
 import * as blessed from 'blessed'
 import * as fs from 'fs'
-import { Fiber, performUnitOfWork } from './Fiber'
+import { Fiber } from './Fiber'
+import { performUnitOfWork } from './FiberTree'
 
 let rootScreen: blessed.Widgets.Screen
 let outStream: fs.WriteStream
@@ -36,8 +37,7 @@ test('Simple Box', () => {
   }
 
   const setWipFiber = jest.fn()
-  const resetHookIndex = jest.fn()
-  const [workUnit] = performUnitOfWork(root, setWipFiber, resetHookIndex)
+  const [workUnit] = performUnitOfWork(root, setWipFiber)
   expect(workUnit!.type).toEqual('box')
   expect(workUnit!.effectTag).toEqual('PLACEMENT')
 
@@ -80,16 +80,15 @@ test('Box with multiple boxes', () => {
   }
 
   const setWipFiber = jest.fn()
-  const resetHookIndex = jest.fn()
 
   // We expect a newly returned unit of work to be without a dom
-  const [workUnit] = performUnitOfWork(root, setWipFiber, resetHookIndex)
+  const [workUnit] = performUnitOfWork(root, setWipFiber)
   expect(workUnit!.dom === undefined).toBe(true)
 
   // We expect the navigation to children to work recursively
   // and we expect the unit of work we just worked on to
   // now have a dom
-  const [child] = performUnitOfWork(workUnit as Fiber, setWipFiber, resetHookIndex)
+  const [child] = performUnitOfWork(workUnit as Fiber, setWipFiber)
   expect(child!.type).toEqual('foo')
   expect(workUnit!.dom === undefined).toBe(false)
 
@@ -102,7 +101,7 @@ test('Box with multiple boxes', () => {
 
   // When there are no more children, but there are siblings
   // we expect performUnitOfWork to return the sibling
-  const [siblingRound2] = performUnitOfWork(child as Fiber, setWipFiber, resetHookIndex)
+  const [siblingRound2] = performUnitOfWork(child as Fiber, setWipFiber)
   expect(siblingRound2 === sibling).toBe(true)
 })
 
@@ -122,10 +121,9 @@ test('1 box -> 1 box => 1 update', () => {
   }
 
   const setWipFiber = jest.fn()
-  const resetHookIndex = jest.fn()
 
-  const [box] = performUnitOfWork(root as Fiber, setWipFiber, resetHookIndex)
-  performUnitOfWork(box as Fiber, setWipFiber, resetHookIndex)
+  const [box] = performUnitOfWork(root as Fiber, setWipFiber)
+  performUnitOfWork(box as Fiber, setWipFiber)
 
   const secondRoot = {
     dom: rootScreen,
@@ -142,7 +140,7 @@ test('1 box -> 1 box => 1 update', () => {
     }
   }
 
-  const [box2] = performUnitOfWork(secondRoot as Fiber, setWipFiber, resetHookIndex)
+  const [box2] = performUnitOfWork(secondRoot as Fiber, setWipFiber)
   expect(box2!.type).toEqual('box')
   expect(box2!.alternate === box).toBe(true)
   expect(box2!.effectTag).toEqual('UPDATE')
@@ -164,10 +162,9 @@ test('1 box -> 0 boxes => 1 deletion', () => {
   }
 
   const setWipFiber = jest.fn()
-  const resetHookIndex = jest.fn()
 
-  const [box] = performUnitOfWork(root as Fiber, setWipFiber, resetHookIndex)
-  performUnitOfWork(box as Fiber, setWipFiber, resetHookIndex)
+  const [box] = performUnitOfWork(root as Fiber, setWipFiber)
+  performUnitOfWork(box as Fiber, setWipFiber)
 
   const secondRoot = {
     dom: rootScreen,
@@ -178,7 +175,7 @@ test('1 box -> 0 boxes => 1 deletion', () => {
     }
   }
 
-  const [box2, deletions] = performUnitOfWork(secondRoot as Fiber, setWipFiber, resetHookIndex)
+  const [box2, deletions] = performUnitOfWork(secondRoot as Fiber, setWipFiber)
   expect(box2 === null).toBe(true)
   expect(deletions.length).toBe(1)
 
@@ -222,12 +219,11 @@ test('1 box(foo,bar,baz) -> 1 box(foo, bar) => 1 update(update, update, delete)'
   }
 
   const setWipFiber = jest.fn()
-  const resetHookIndex = jest.fn()
 
   let nuw: Fiber | null = root
   const deletions: Fiber[] = []
   while (nuw) {
-    const [wu, ld] = performUnitOfWork(nuw as Fiber, setWipFiber, resetHookIndex)
+    const [wu, ld] = performUnitOfWork(nuw as Fiber, setWipFiber)
     deletions.push(...ld)
     nuw = wu
   }
@@ -264,7 +260,7 @@ test('1 box(foo,bar,baz) -> 1 box(foo, bar) => 1 update(update, update, delete)'
 
   nuw = secondRoot
   while (nuw) {
-    const [wu, ld] = performUnitOfWork(nuw as Fiber, setWipFiber, resetHookIndex)
+    const [wu, ld] = performUnitOfWork(nuw as Fiber, setWipFiber)
     deletions.push(...ld)
     nuw = wu
   }
@@ -322,12 +318,11 @@ test('1 box(foo,bar,baz) -> 1 box(foo, baz) => 1 update(update, placement, delet
   }
 
   const setWipFiber = jest.fn()
-  const resetHookIndex = jest.fn()
 
   let nuw: Fiber | null = root
   const deletions: Fiber[] = []
   while (nuw) {
-    const [wu, ld] = performUnitOfWork(nuw as Fiber, setWipFiber, resetHookIndex)
+    const [wu, ld] = performUnitOfWork(nuw as Fiber, setWipFiber)
     deletions.push(...ld)
     nuw = wu
   }
@@ -364,7 +359,7 @@ test('1 box(foo,bar,baz) -> 1 box(foo, baz) => 1 update(update, placement, delet
 
   nuw = secondRoot
   while (nuw) {
-    const [wu, ld] = performUnitOfWork(nuw as Fiber, setWipFiber, resetHookIndex)
+    const [wu, ld] = performUnitOfWork(nuw as Fiber, setWipFiber)
     deletions.push(...ld)
     nuw = wu
   }

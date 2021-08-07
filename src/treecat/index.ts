@@ -1,103 +1,80 @@
 import * as blessed from 'blessed'
 import { ElementDescription } from './ElementDescription'
-import { Fiber, Hook, performUnitOfWork } from './Fiber'
+import { Fiber } from './Fiber'
+import { RendererContext } from './RendererContext'
+import { performUnitOfWork } from './FiberTree'
 import { commitWork } from './Dom'
+import { createHook as createUseState } from './hooks/useState'
 export { createElement, JSX } from './jsx'
 
-let nextUnitOfWork: Fiber | null
-let wipRoot: Fiber | null
-let wipFiber: Fiber | null
-let hookIndex: number = 0
-let currentRoot: Fiber | null
-let blessedRoot: blessed.Widgets.Screen | null
-let deletions: Fiber[] = []
-let shouldStopWorkloop: boolean = false
-let workLoopResolve: any = null
+const context: RendererContext = {
+  nextUnitOfWork: null,
+  wipRoot: null,
+  wipFiber: null,
+  currentRoot: null,
+  blessedRoot: null,
+  deletions: [],
+  shouldStopWorkloop: false,
+  workLoopResolve: null
+}
+
+export const useState = createUseState(getContext)
 
 export function render (element: ElementDescription, container: blessed.Widgets.Screen) {
-  blessedRoot = container
-  wipRoot = {
+  context.blessedRoot = container
+  context.wipRoot = {
+    hookIndex: 0,
     dom: container,
     props: {
       children: [element]
     },
-    alternate: currentRoot
+    alternate: context.currentRoot
   }
 
-  shouldStopWorkloop = false
-  nextUnitOfWork = wipRoot
+  context.shouldStopWorkloop = false
+  context.nextUnitOfWork = context.wipRoot
   setImmediate(workLoop)
 }
 
 export async function stopRendering (): Promise<void> {
-  shouldStopWorkloop = true
+  context.shouldStopWorkloop = true
   const p = new Promise<void>((resolve) => {
-    workLoopResolve = resolve
+    context.workLoopResolve = resolve
   })
   return p
 }
 
-export function useState (initial: any): [any, (action: (...args: any[]) => any) => void] {
-  const oldHook: Hook | null = wipFiber?.alternate?.hooks?.[hookIndex] ?? null
-  const hook: Hook = {
-    state: oldHook?.state ?? initial,
-    queue: []
-  }
-
-  const actions = oldHook?.queue ?? []
-  actions.forEach(action => {
-    hook.state = action(hook.state)
-  })
-
-  const setState = (action: (...args: any[]) => any): void => {
-    hook.queue.push(action)
-    wipRoot = {
-      dom: currentRoot?.dom,
-      props: currentRoot?.props,
-      alternate: currentRoot
-    }
-
-    nextUnitOfWork = wipRoot
-    deletions = []
-  }
-
-  wipFiber?.hooks?.push(hook)
-  hookIndex++
-  return [hook.state, setState]
-}
-
-
 function workLoop () {
-  while (nextUnitOfWork) {
-    const [workUnit, localDeletions] = performUnitOfWork(nextUnitOfWork, setWipFiber, resetHookIndex)
-    deletions.push(...localDeletions)
-    nextUnitOfWork = workUnit
+  while (context.nextUnitOfWork) {
+    const [workUnit, localDeletions] = performUnitOfWork(context.nextUnitOfWork, setWipFiber)
+    context.deletions.push(...localDeletions)
+    context.nextUnitOfWork = workUnit
   }
 
-  if (!nextUnitOfWork && wipRoot) {
+  if (!context.nextUnitOfWork && context.wipRoot) {
     commitRoot()
   }
 
-  if (!nextUnitOfWork && !wipRoot && shouldStopWorkloop) {
-    workLoopResolve()
+  if (!context.nextUnitOfWork && !context.wipRoot && context.shouldStopWorkloop) {
+    context.workLoopResolve()
   } else {
     setTimeout(() => workLoop(), 30)
   }
 }
 
 function setWipFiber (fiber: Fiber | null): void {
-  wipFiber = fiber
+  context.wipFiber = fiber
 }
 
-function resetHookIndex (): void {
-  hookIndex = 0
+function getContext (): RendererContext {
+  return context
 }
 
 function commitRoot () {
-  deletions.forEach(commitWork)
-  commitWork(wipRoot?.child ?? null)
-  currentRoot = wipRoot
-  wipRoot = null
-  blessedRoot?.render()
+  context.deletions.forEach(commitWork)
+  commitWork(context.wipRoot?.child ?? null)
+  context.currentRoot = context.wipRoot
+  context.wipRoot = null
+  context.blessedRoot?.render()
 }
 

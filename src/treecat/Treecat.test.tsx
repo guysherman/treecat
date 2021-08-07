@@ -50,9 +50,9 @@ function Counter () {
 
   const kp = (ch: string, _key: any) => {
     if (ch === '+') {
-      setState(s => s + 1)
+      setState((s: number) => s + 1)
     } else if (ch === '-') {
-      setState(s => s - 1)
+      setState((s: number) => s - 1)
     }
   }
 

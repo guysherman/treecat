@@ -129,7 +129,6 @@ export function commitWork (fiber: Fiber | null) {
       domParent.remove(fiber.alternate.dom)
       domParent.append(fiber.dom)
       if (fiber.props.focused) {
-        console.log('should be focused! :(')
         fiber.dom.screen.focused = fiber.dom as blessed.Widgets.BlessedElement
       }
     } else if (fiber.effectTag === 'DELETION') {
