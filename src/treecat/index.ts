@@ -74,7 +74,7 @@ function commitRoot () {
   context.deletions.forEach(commitWork)
   commitWork(context.wipRoot?.child ?? null)
   context.currentRoot = context.wipRoot
-  context.wipRoot = null
   context.blessedRoot?.render()
+  context.wipRoot = null
 }
 

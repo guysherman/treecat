@@ -14,6 +14,13 @@ beforeEach(() => {
   rootScreen = blessed.screen({ output: inStream, input: outStream })
 })
 
+afterEach(() => {
+  rootScreen.destroy()
+  outStream.close()
+  inStream.close()
+  jest.useRealTimers()
+})
+
 test('createDom - screen - should throw', () => {
   const f: Fiber = { type: 'screen', props: { children: [] } }
 
@@ -289,12 +296,5 @@ test('commitWork - simple function component - delete', () => {
 
   commitWork(fc)
   expect(rootScreen.children.length).toBe(0)
-})
-
-afterEach(() => {
-  rootScreen.destroy()
-  outStream.close()
-  inStream.close()
-  jest.useRealTimers()
 })
 
