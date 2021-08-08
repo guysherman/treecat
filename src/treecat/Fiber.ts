@@ -11,5 +11,7 @@ export type Fiber = ElementDescription & {
   alternate?: Fiber | null;
   effectTag?: string;
   hooks?: Hook[];
+  effects?: (() => (() => void) | void)[];
+  effectCleanups?: (() => void)[];
 }
 
