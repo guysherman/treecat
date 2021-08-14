@@ -2,7 +2,7 @@
 import * as blessed from 'blessed'
 import * as TreeCat from './index'
 import * as fs from 'fs'
-import { useState } from './index'
+import { useEffect, useState } from './index'
 
 let rootScreen: blessed.Widgets.Screen
 let outStream: fs.WriteStream
@@ -45,21 +45,24 @@ test('simple function component', async () => {
   expect(box).toBeTruthy()
 })
 
-function Counter () {
-  const [state, setState] = useState(1)
-
-  const kp = (ch: string, _key: any) => {
-    if (ch === '+') {
-      setState((s: number) => s + 1)
-    } else if (ch === '-') {
-      setState((s: number) => s - 1)
-    }
-  }
-
-  return <box><box focused={true} onkeypress={kp}>{ state }</box></box>
-}
 
 test('simple counter example', async () => {
+  const mockCleanup = jest.fn()
+  const mockEffect = jest.fn(() => mockCleanup)
+  const Counter = () => {
+    const [state, setState] = useState(1)
+    useEffect(mockEffect, [state])
+
+    const kp = (ch: string, _key: any) => {
+      if (ch === '+') {
+        setState((s: number) => s + 1)
+      } else if (ch === '-') {
+        setState((s: number) => s - 1)
+      }
+    }
+
+    return <box><box focused={true} onkeypress={kp}>{ state }</box></box>
+  }
   const tree = <Counter />
   TreeCat.render(tree, rootScreen)
 
@@ -91,6 +94,9 @@ test('simple counter example', async () => {
 
   elStillFocused = el.screen.focused === el
   expect(elStillFocused).toBe(true)
+
+  expect(mockEffect).toHaveBeenCalledTimes(3)
+  expect(mockCleanup).toHaveBeenCalledTimes(2)
 })
 
 afterEach(() => {

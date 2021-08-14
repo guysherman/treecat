@@ -139,6 +139,16 @@ export function commitWork (fiber: Fiber | null) {
   }
 
   commitWork(fiber.child ?? null)
+
+  if (fiber.effects) {
+    for (const effect of fiber.effects) {
+      const cleanup = effect()
+      if (cleanup) {
+        fiber.effectCleanups.push(cleanup)
+      }
+    }
+  }
+
   commitWork(fiber.sibling ?? null)
 }
 
@@ -152,5 +162,11 @@ function commitDelete (fiber: Fiber | null, domParent: blessed.Widgets.Node) {
     fiber.dom.destroy()
   } else {
     commitDelete(fiber?.child ?? null, domParent)
+  }
+
+  if (fiber.effectCleanups) {
+    for (const cleanup of fiber.effectCleanups) {
+      cleanup()
+    }
   }
 }

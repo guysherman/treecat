@@ -323,6 +323,8 @@ test('commitWork - simple function component - delete', () => {
 
   const b: Fiber = {
     dom: bBox,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
     },
@@ -335,5 +337,53 @@ test('commitWork - simple function component - delete', () => {
 
   commitWork(fc)
   expect(rootScreen.children.length).toBe(0)
+})
+
+test('commitWork - function component with cleanup - delete', () => {
+  const bBox = blessed.box()
+  rootScreen.append(bBox)
+
+  const root: Fiber = {
+    dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
+    props: {
+      children: []
+
+    }
+  }
+
+  const mock = jest.fn()
+
+  const fc: Fiber = {
+    type: () => {},
+    props: {
+      children: []
+    },
+    parent: root,
+    effectTag: 'DELETION',
+    effects: [],
+    effectCleanups: [mock]
+  }
+  root.props.children.push(fc)
+  root.child = fc
+
+  const b: Fiber = {
+    dom: bBox,
+    effects: [],
+    effectCleanups: [],
+    props: {
+      children: []
+    },
+    parent: fc
+  }
+  fc.props.children.push(b)
+  fc.child = b
+
+  expect(rootScreen.children.length).toBe(1)
+
+  commitWork(fc)
+  expect(rootScreen.children.length).toBe(0)
+  expect(mock).toHaveBeenCalled()
 })
 
