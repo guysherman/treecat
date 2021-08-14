@@ -24,10 +24,14 @@ afterEach(() => {
 test('Simple Box', () => {
   const root = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: [
         {
           type: 'box',
+          effects: [],
+          effectCleanups: [],
           props: {
             children: []
           }
@@ -48,26 +52,36 @@ test('Simple Box', () => {
 test('Box with multiple boxes', () => {
   const root = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: [
         {
           type: 'box',
+          effects: [],
+          effectCleanups: [],
           props: {
             children: [
               {
                 type: 'foo',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
               },
               {
                 type: 'bar',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
               },
               {
                 type: 'baz',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
@@ -108,10 +122,14 @@ test('Box with multiple boxes', () => {
 test('1 box -> 1 box => 1 update', () => {
   const root = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: [
         {
           type: 'box',
+          effects: [],
+          effectCleanups: [],
           props: {
             children: []
           }
@@ -128,10 +146,14 @@ test('1 box -> 1 box => 1 update', () => {
   const secondRoot = {
     dom: rootScreen,
     alternate: root,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: [
         {
           type: 'box',
+          effects: [],
+          effectCleanups: [],
           props: {
             children: []
           }
@@ -149,10 +171,14 @@ test('1 box -> 1 box => 1 update', () => {
 test('1 box -> 0 boxes => 1 deletion', () => {
   const root = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: [
         {
           type: 'box',
+          effects: [],
+          effectCleanups: [],
           props: {
             children: []
           }
@@ -169,6 +195,8 @@ test('1 box -> 0 boxes => 1 deletion', () => {
   const secondRoot = {
     dom: rootScreen,
     alternate: root,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: [
       ]
@@ -187,26 +215,36 @@ test('1 box -> 0 boxes => 1 deletion', () => {
 test('1 box(foo,bar,baz) -> 1 box(foo, bar) => 1 update(update, update, delete)', () => {
   const root = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: [
         {
           type: 'box',
+          effects: [],
+          effectCleanups: [],
           props: {
             children: [
               {
                 type: 'foo',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
               },
               {
                 type: 'bar',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
               },
               {
                 type: 'baz',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
@@ -233,20 +271,28 @@ test('1 box(foo,bar,baz) -> 1 box(foo, bar) => 1 update(update, update, delete)'
   const secondRoot = {
     dom: rootScreen,
     alternate: root,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: [
         {
           type: 'box',
+          effects: [],
+          effectCleanups: [],
           props: {
             children: [
               {
                 type: 'foo',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
               },
               {
                 type: 'bar',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
@@ -286,6 +332,8 @@ test('1 box(foo,bar,baz) -> 1 box(foo, bar) => 1 update(update, update, delete)'
 test('1 box(foo,bar,baz) -> 1 box(foo, baz) => 1 update(update, placement, delete, delete)', () => {
   const root = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: [
         {
@@ -294,18 +342,24 @@ test('1 box(foo,bar,baz) -> 1 box(foo, baz) => 1 update(update, placement, delet
             children: [
               {
                 type: 'foo',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
               },
               {
                 type: 'bar',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
               },
               {
                 type: 'baz',
+                effects: [],
+                effectCleanups: [],
                 props: {
                   children: []
                 }
@@ -332,10 +386,14 @@ test('1 box(foo,bar,baz) -> 1 box(foo, baz) => 1 update(update, placement, delet
   const secondRoot = {
     dom: rootScreen,
     alternate: root,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: [
         {
           type: 'box',
+          effects: [],
+          effectCleanups: [],
           props: {
             children: [
               {

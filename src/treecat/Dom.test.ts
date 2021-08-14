@@ -22,7 +22,12 @@ afterEach(() => {
 })
 
 test('createDom - screen - should throw', () => {
-  const f: Fiber = { type: 'screen', props: { children: [] } }
+  const f: Fiber = {
+    type: 'screen',
+    effects: [],
+    effectCleanups: [],
+    props: { children: [] }
+  }
 
   expect(() => { createDom(f) }).toThrow('Creating screens via JSX is not supported')
 })
@@ -31,6 +36,8 @@ test('createDom - screen - should throw', () => {
 test('createDom - box', () => {
   const f: Fiber = {
     type: 'box',
+    effects: [],
+    effectCleanups: [],
     props: {
       top: 'center',
       left: 'center',
@@ -51,6 +58,8 @@ test('createDom - box', () => {
 test('createDom - orphan text - should throw', () => {
   const f: Fiber = {
     type: 'TEXT_ELEMENT',
+    effects: [],
+    effectCleanups: [],
     props: {
       nodeValue: 'Some Text',
       children: []
@@ -63,6 +72,8 @@ test('createDom - orphan text - should throw', () => {
 test('createDom - box with text', () => {
   const f: Fiber = {
     type: 'box',
+    effects: [],
+    effectCleanups: [],
     props: {
       top: 'center',
       left: 'center',
@@ -72,6 +83,8 @@ test('createDom - box with text', () => {
 
   const g: Fiber = {
     type: 'TEXT_ELEMENT',
+    effects: [],
+    effectCleanups: [],
     props: {
       nodeValue: 'Some Text',
       children: []
@@ -100,6 +113,8 @@ test('createDom - box with event', () => {
 
   const f: Fiber = {
     type: 'box',
+    effects: [],
+    effectCleanups: [],
     props: {
       onkeypress: keypress,
       children: []
@@ -116,6 +131,8 @@ test('createDom - box with event', () => {
 test('commitWork - simple box - placement', () => {
   const a: Fiber = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
 
@@ -124,6 +141,8 @@ test('commitWork - simple box - placement', () => {
 
   const b: Fiber = {
     dom: blessed.box(),
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
     },
@@ -150,6 +169,8 @@ test('commitWork - box with child - update', () => {
 
   const a: Fiber = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
 
@@ -158,6 +179,8 @@ test('commitWork - box with child - update', () => {
 
   const bOrig: Fiber = {
     dom: bBox,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
     },
@@ -167,6 +190,8 @@ test('commitWork - box with child - update', () => {
 
   const b: Fiber = {
     dom: blessed.box(),
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
     },
@@ -198,6 +223,8 @@ test('commitWork - simple box - delete', () => {
 
   const a: Fiber = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
 
@@ -206,6 +233,8 @@ test('commitWork - simple box - delete', () => {
 
   const b: Fiber = {
     dom: bBox,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
     },
@@ -224,6 +253,8 @@ test('commitWork - simple box - delete', () => {
 test('commitWork - simple function component - placement', () => {
   const root: Fiber = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
     }
@@ -231,6 +262,8 @@ test('commitWork - simple function component - placement', () => {
 
   const fc: Fiber = {
     type: () => {},
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
     },
@@ -242,6 +275,8 @@ test('commitWork - simple function component - placement', () => {
   const b: Fiber = {
     type: 'box',
     dom: blessed.box(),
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
     },
@@ -265,6 +300,8 @@ test('commitWork - simple function component - delete', () => {
 
   const root: Fiber = {
     dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
 
@@ -273,6 +310,8 @@ test('commitWork - simple function component - delete', () => {
 
   const fc: Fiber = {
     type: () => {},
+    effects: [],
+    effectCleanups: [],
     props: {
       children: []
     },

@@ -49,7 +49,9 @@ describe('useEffect', () => {
     const fib1: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: []
+      props: [],
+      effects: [],
+      effectCleanups: []
     }
     const getContext = () => {
       return {
@@ -68,14 +70,18 @@ describe('useEffect', () => {
     const fib1: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: []
+      props: [],
+      effects: [],
+      effectCleanups: []
     }
 
     const fib2: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
       props: [],
-      alternate: fib1
+      alternate: fib1,
+      effects: [],
+      effectCleanups: []
     }
 
     const context = {
@@ -100,14 +106,18 @@ describe('useEffect', () => {
     const fib1: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: []
+      props: [],
+      effects: [],
+      effectCleanups: []
     }
 
     const fib2: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
       props: [],
-      alternate: fib1
+      alternate: fib1,
+      effects: [],
+      effectCleanups: []
     }
 
     const context = {
@@ -133,14 +143,18 @@ describe('useEffect', () => {
     const fib1: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: []
+      props: [],
+      effects: [],
+      effectCleanups: []
     }
 
     const fib2: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
       props: [],
-      alternate: fib1
+      alternate: fib1,
+      effects: [],
+      effectCleanups: []
     }
 
     const context = {
@@ -167,14 +181,18 @@ describe('useEffect', () => {
     const fib1: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: []
+      props: [],
+      effects: [],
+      effectCleanups: []
     }
 
     const fib2: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
       props: [],
-      alternate: fib1
+      alternate: fib1,
+      effects: [],
+      effectCleanups: []
     }
 
     const context = {

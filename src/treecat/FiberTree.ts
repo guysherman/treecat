@@ -63,7 +63,9 @@ function reconcileChildren (wipFiber: Fiber, elements: Fiber[]): Fiber[] {
         props: element.props,
         parent: wipFiber,
         alternate: oldFiber,
-        effectTag: 'UPDATE'
+        effectTag: 'UPDATE',
+        effects: [],
+        effectCleanups: []
       }
     }
 
@@ -71,7 +73,9 @@ function reconcileChildren (wipFiber: Fiber, elements: Fiber[]): Fiber[] {
       newFiber = {
         ...element,
         parent: wipFiber,
-        effectTag: 'PLACEMENT'
+        effectTag: 'PLACEMENT',
+        effects: [],
+        effectCleanups: []
       }
     }
 

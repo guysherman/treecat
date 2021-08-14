@@ -28,7 +28,9 @@ export function render (element: ElementDescription, container: blessed.Widgets.
     props: {
       children: [element]
     },
-    alternate: context.currentRoot
+    alternate: context.currentRoot,
+    effects: [],
+    effectCleanups: []
   }
 
   context.shouldStopWorkloop = false
