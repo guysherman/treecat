@@ -3,7 +3,7 @@ import { Hook } from '../Hook'
 import { RendererContext } from '../RendererContext'
 import { createHook } from './useEffect'
 
-describe.skip('useEffect', () => {
+describe('useEffect', () => {
   test('should throw if context is broken', () => {
     const getContextBroken = () => {
       return {
@@ -195,6 +195,7 @@ describe.skip('useEffect', () => {
     fib1.effectCleanups = [fib1!.effects![0]() as (() => void)]
 
     expect(fib1!.effects![0]).toBe(mock)
+    expect(fib1!.effectCleanups[0]).toBe(mockCleanup)
 
     useEffect(mock)
     expect(fib2!.effects![0]).toBe(mock)
