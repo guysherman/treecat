@@ -55,9 +55,9 @@ test('simple counter example', async () => {
 
     const kp = (ch: string, _key: any) => {
       if (ch === '+') {
-        setState((s: number) => s + 1)
+        setState(state + 1)
       } else if (ch === '-') {
-        setState((s: number) => s - 1)
+        setState(state - 1)
       }
     }
 

@@ -2,7 +2,7 @@ import { Hook } from '../Hook'
 import { RendererContext } from '../RendererContext'
 
 export function createHook (getContext: () => RendererContext): (...args: any[]) => any {
-  const useState = (initial: any): [any, (action: (...args: any[]) => any) => void] => {
+  const useState = (initial: any): [any, (value: any) => void] => {
     const context = getContext()
     if (context?.wipFiber?.hookIndex !== undefined && context?.wipFiber?.hooks) {
       const oldHook: Hook | null = context.wipFiber?.alternate?.hooks?.[context.wipFiber.hookIndex] ?? null
@@ -11,13 +11,8 @@ export function createHook (getContext: () => RendererContext): (...args: any[])
         queue: []
       }
 
-      const actions = oldHook?.queue ?? []
-      actions.forEach(action => {
-        hook.state = action(hook.state)
-      })
-
-      const setState = (action: (...args: any[]) => any): void => {
-        hook.queue.push(action)
+      const setState = (value: any): void => {
+        hook.state = value
         context.wipRoot = {
           dom: context?.currentRoot?.dom,
           props: context?.currentRoot?.props,

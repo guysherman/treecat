@@ -93,7 +93,7 @@ test('calling the hook for a new frame should return updated state', () => {
   const [state, func] = useState(0)
   expect(state).toBe(0)
   expect(fib1.hookIndex).toBe(1)
-  func(() => 42)
+  func(42)
 
   context.wipFiber = fib2
   const [state2] = useState(0)
