@@ -6,6 +6,7 @@ import { performUnitOfWork } from './FiberTree'
 import { commitWork } from './Dom'
 import { createHook as createUseState } from './hooks/useState'
 import { createHook as createUseEffect } from './hooks/useEffect'
+import { createHook as createUseRoot } from './hooks/useRoot'
 export { createElement, JSX } from './jsx'
 
 const context: RendererContext = {
@@ -21,6 +22,7 @@ const context: RendererContext = {
 
 export const useState = createUseState(getContext)
 export const useEffect = createUseEffect(getContext)
+export const useRoot = createUseRoot(getContext)
 
 export function render (element: ElementDescription, container: blessed.Widgets.Screen) {
   context.blessedRoot = container
