@@ -29,7 +29,8 @@ function updateFunctionComponent (fiber: Fiber, setWipFiber: (fiber: Fiber) => v
   fiber.hooks = []
   fiber.hookIndex = 0
   setWipFiber(fiber)
-  const children = [fiber.type(fiber.props)]
+  const returned = fiber.type(fiber.props)
+  const children = returned.length !== undefined ? returned : [returned]
   const localDeletions: Fiber[] = reconcileChildren(fiber, children)
   return localDeletions
 }

@@ -2,7 +2,7 @@
 import * as blessed from 'blessed'
 import * as TreeCat from './index'
 import * as fs from 'fs'
-import { useEffect, useState } from './index'
+import { Fragment, useEffect, useState } from './index'
 
 let rootScreen: blessed.Widgets.Screen
 let outStream: fs.WriteStream
@@ -97,6 +97,28 @@ test('simple counter example', async () => {
 
   expect(mockEffect).toHaveBeenCalledTimes(3)
   expect(mockCleanup).toHaveBeenCalledTimes(2)
+})
+
+
+const TestFragmentFc = () => {
+  return (
+    <Fragment>
+      <box />
+    </Fragment>
+  )
+}
+
+it('simple fragment example', async () => {
+  const tree = <TestFragmentFc />
+  TreeCat.render(tree, rootScreen)
+
+  const p: Promise<void> = TreeCat.stopRendering()
+  jest.runAllTimers()
+  await p.then(() => true)
+
+  const { children: [box] } = rootScreen
+
+  expect(box).toBeTruthy()
 })
 
 afterEach(() => {

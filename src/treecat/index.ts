@@ -8,6 +8,7 @@ import { createHook as createUseState } from './hooks/useState'
 import { createHook as createUseEffect } from './hooks/useEffect'
 import { createHook as createUseRoot } from './hooks/useRoot'
 export { createElement, JSX } from './jsx'
+export { Fragment } from './baseComponents'
 
 const context: RendererContext = {
   nextUnitOfWork: null,

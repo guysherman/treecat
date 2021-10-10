@@ -28,6 +28,14 @@ export namespace JSX {
     log: any;
     table: any;
   }
+
+  export interface ElementAttributesProperty {
+    props: any; // specify the property name to use
+  }
+
+  export interface ElementChildrenAttribute {
+    children: {}; // specify children name to use
+  }
 }
 
 export function createElement (type: any, props: any, ...children: any): ElementDescription {

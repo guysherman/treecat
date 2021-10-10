@@ -36,7 +36,4 @@ export function createNode<TNode extends blessed.Widgets.Node, TNodeOptions> (el
   return node
 }
 
-
-export function Screen (_props: blessed.Widgets.IScreenOptions) {}
-export function Box (_props: blessed.Widgets.BoxOptions) {}
-
+export { Fragment } from './Fragment'
