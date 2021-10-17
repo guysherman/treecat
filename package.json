@@ -9,7 +9,7 @@
     "lint": "eslint src/**/*.ts",
     "run-dev": "ts-node src/index.tsx",
     "inspect-dev": "node -r ts-node/register --inspect-brk src/index.tsx",
-    "test-watch:treecat": "jest --testPathPattern=src/treecat/ --testPathIgnorePatterns=dist/ --watch --runInBand --no-cache"
+    "test-watch:treecat": "jest --testPathPattern=src/treecat/ --testPathIgnorePatterns=dist/ --watch --runInBand"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
