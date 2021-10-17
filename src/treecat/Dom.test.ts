@@ -91,7 +91,7 @@ test('createDom - box with text', () => {
     }
   }
 
-  f.props.children.push(g)
+  f.props.children?.push(g)
   f.child = g
   g.parent = f
 
@@ -150,7 +150,7 @@ test('commitWork - simple box - placement', () => {
     effectTag: 'PLACEMENT'
   }
 
-  a.props.children.push(b)
+  a.props.children?.push(b)
   a.child = b
   expect(rootScreen.children.length).toBe(0)
 
@@ -200,7 +200,7 @@ test('commitWork - box with child - update', () => {
     effectTag: 'UPDATE'
   }
 
-  a.props.children.push(b)
+  a.props.children?.push(b)
   a.child = b
   expect(rootScreen.children.length).toBe(1)
 
@@ -242,7 +242,7 @@ test('commitWork - simple box - delete', () => {
     effectTag: 'DELETION'
   }
 
-  a.props.children.push(b)
+  a.props.children?.push(b)
   a.child = b
   expect(rootScreen.children.length).toBe(1)
 
@@ -261,7 +261,7 @@ test('commitWork - simple function component - placement', () => {
   }
 
   const fc: Fiber = {
-    type: () => {},
+    type: () => [],
     effects: [],
     effectCleanups: [],
     props: {
@@ -269,7 +269,7 @@ test('commitWork - simple function component - placement', () => {
     },
     parent: root
   }
-  root.props.children.push(fc)
+  root.props.children?.push(fc)
   root.child = fc
 
   const b: Fiber = {
@@ -283,7 +283,7 @@ test('commitWork - simple function component - placement', () => {
     parent: fc,
     effectTag: 'PLACEMENT'
   }
-  fc.props.children.push(b)
+  fc.props.children?.push(b)
   fc.child = b
   expect(rootScreen.children.length).toBe(0)
 
@@ -309,7 +309,7 @@ test('commitWork - simple function component - delete', () => {
   }
 
   const fc: Fiber = {
-    type: () => {},
+    type: () => [],
     effects: [],
     effectCleanups: [],
     props: {
@@ -318,7 +318,7 @@ test('commitWork - simple function component - delete', () => {
     parent: root,
     effectTag: 'DELETION'
   }
-  root.props.children.push(fc)
+  root.props.children?.push(fc)
   root.child = fc
 
   const b: Fiber = {
@@ -330,7 +330,7 @@ test('commitWork - simple function component - delete', () => {
     },
     parent: fc
   }
-  fc.props.children.push(b)
+  fc.props.children?.push(b)
   fc.child = b
 
   expect(rootScreen.children.length).toBe(1)
@@ -356,7 +356,7 @@ test('commitWork - function component with cleanup - delete', () => {
   const mock = jest.fn()
 
   const fc: Fiber = {
-    type: () => {},
+    type: () => [],
     props: {
       children: []
     },
@@ -365,7 +365,7 @@ test('commitWork - function component with cleanup - delete', () => {
     effects: [],
     effectCleanups: [mock]
   }
-  root.props.children.push(fc)
+  root.props.children?.push(fc)
   root.child = fc
 
   const b: Fiber = {
@@ -377,7 +377,7 @@ test('commitWork - function component with cleanup - delete', () => {
     },
     parent: fc
   }
-  fc.props.children.push(b)
+  fc.props.children?.push(b)
   fc.child = b
 
   expect(rootScreen.children.length).toBe(1)

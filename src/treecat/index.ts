@@ -1,5 +1,5 @@
 import * as blessed from 'blessed'
-import { TreecatElement } from './types/TreecatElement'
+import { TreecatElement } from './types'
 import { Fiber } from './Fiber'
 import { RendererContext } from './RendererContext'
 import { performUnitOfWork } from './FiberTree'

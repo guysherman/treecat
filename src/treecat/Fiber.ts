@@ -1,8 +1,8 @@
 import * as blessed from 'blessed'
-import { TreecatElement } from './types/TreecatElement'
+import { TreecatElement } from './types'
 import { Hook } from './Hook'
 
-export type Fiber = TreecatElement & {
+export interface Fiber extends TreecatElement {
   hookIndex?: number;
   dom?: blessed.Widgets.Node;
   parent?: Fiber;
@@ -11,7 +11,7 @@ export type Fiber = TreecatElement & {
   alternate?: Fiber | null;
   effectTag?: string;
   hooks?: Hook[];
-  effects: (() => (() => void) | void)[];
-  effectCleanups: (() => void)[];
+  effects?: (() => (() => void) | void)[];
+  effectCleanups?: (() => void)[];
 }
 

@@ -45,7 +45,7 @@ test('Simple Box', () => {
   expect(workUnit!.type).toEqual('box')
   expect(workUnit!.effectTag).toEqual('PLACEMENT')
 
-  const { props: { children } } = workUnit as Fiber
+  const children = workUnit?.props?.children
   expect(children).toEqual([])
 })
 

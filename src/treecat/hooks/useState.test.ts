@@ -67,7 +67,7 @@ test('calling the hook for a new frame should return updated state', () => {
   const fib1: Fiber = {
     hookIndex: 0,
     hooks: [] as Hook[],
-    props: [],
+    props: { children: [] },
     effects: [],
     effectCleanups: []
   }
@@ -76,7 +76,7 @@ test('calling the hook for a new frame should return updated state', () => {
     hookIndex: 0,
     hooks: [] as Hook[],
     alternate: fib1,
-    props: [],
+    props: { children: [] },
     effects: [],
     effectCleanups: []
   }

@@ -49,7 +49,7 @@ describe('useEffect', () => {
     const fib1: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: [],
+      props: { children: [] },
       effects: [],
       effectCleanups: []
     }
@@ -70,7 +70,7 @@ describe('useEffect', () => {
     const fib1: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: [],
+      props: { children: [] },
       effects: [],
       effectCleanups: []
     }
@@ -78,7 +78,7 @@ describe('useEffect', () => {
     const fib2: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: [],
+      props: { children: [] },
       alternate: fib1,
       effects: [],
       effectCleanups: []
@@ -106,7 +106,7 @@ describe('useEffect', () => {
     const fib1: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: [],
+      props: { children: [] },
       effects: [],
       effectCleanups: []
     }
@@ -114,7 +114,7 @@ describe('useEffect', () => {
     const fib2: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: [],
+      props: { children: [] },
       alternate: fib1,
       effects: [],
       effectCleanups: []
@@ -143,7 +143,7 @@ describe('useEffect', () => {
     const fib1: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: [],
+      props: { children: [] },
       effects: [],
       effectCleanups: []
     }
@@ -151,7 +151,7 @@ describe('useEffect', () => {
     const fib2: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: [],
+      props: { children: [] },
       alternate: fib1,
       effects: [],
       effectCleanups: []
@@ -181,7 +181,7 @@ describe('useEffect', () => {
     const fib1: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: [],
+      props: { children: [] },
       effects: [],
       effectCleanups: []
     }
@@ -189,7 +189,7 @@ describe('useEffect', () => {
     const fib2: Fiber = {
       hookIndex: 0,
       hooks: [] as Hook[],
-      props: [],
+      props: { children: [] },
       alternate: fib1,
       effects: [],
       effectCleanups: []

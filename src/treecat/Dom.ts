@@ -144,6 +144,9 @@ export function commitWork (fiber: Fiber | null) {
     for (const effect of fiber.effects) {
       const cleanup = effect()
       if (cleanup) {
+        if (!fiber.effectCleanups) {
+          fiber.effectCleanups = []
+        }
         fiber.effectCleanups.push(cleanup)
       }
     }

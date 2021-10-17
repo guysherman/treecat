@@ -1,5 +1,4 @@
-import { TreecatElement } from '../types/TreecatElement'
-import { TreecatNode } from '../types/TreecatNode'
+import { TreecatNode } from '../types'
 
 type FragmentProps = {
   children: TreecatNode

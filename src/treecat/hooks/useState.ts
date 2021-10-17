@@ -15,7 +15,7 @@ export function createHook (getContext: () => RendererContext): (...args: any[])
         hook.state = value
         context.wipRoot = {
           dom: context?.currentRoot?.dom,
-          props: context?.currentRoot?.props,
+          props: context?.currentRoot?.props ?? {},
           effects: [],
           effectCleanups: [],
           alternate: context?.currentRoot

@@ -1,5 +1,6 @@
 import { Fiber } from './Fiber'
 import { createDom } from './Dom'
+import { TreecatElement } from './types'
 
 export function performUnitOfWork (fiber: Fiber, setWipFiber: (fiber: Fiber) => void): [Fiber | null, Fiber[]] {
   let localDeletions: Fiber[]
@@ -29,10 +30,18 @@ function updateFunctionComponent (fiber: Fiber, setWipFiber: (fiber: Fiber) => v
   fiber.hooks = []
   fiber.hookIndex = 0
   setWipFiber(fiber)
+  if (!fiber.type) {
+    throw new Error('fiber.type was undefined')
+  }
+  if (typeof fiber.type === 'string') {
+    throw new Error('Invalid function component')
+  }
   const returned = fiber.type(fiber.props)
-  const children = returned.length !== undefined ? returned : [returned]
-  const localDeletions: Fiber[] = reconcileChildren(fiber, children)
-  return localDeletions
+  if ('length' in returned) {
+    return reconcileChildren(fiber, returned)
+  } else {
+    return reconcileChildren(fiber, [returned])
+  }
 }
 
 function updateHostComponent (fiber: Fiber): Fiber[] {
@@ -40,12 +49,12 @@ function updateHostComponent (fiber: Fiber): Fiber[] {
     fiber.dom = createDom(fiber)
   }
 
-  const elements: Fiber[] = fiber.props.children
+  const elements = fiber?.props?.children ?? []
   const localDeletions: Fiber[] = reconcileChildren(fiber, elements)
   return localDeletions
 }
 
-function reconcileChildren (wipFiber: Fiber, elements: Fiber[]): Fiber[] {
+function reconcileChildren (wipFiber: Fiber, elements: TreecatElement[]): Fiber[] {
   let index: number = 0
   let oldFiber: Fiber | null = wipFiber?.alternate?.child ?? null
   let prevSibling: Fiber | null = null

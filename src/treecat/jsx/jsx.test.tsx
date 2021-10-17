@@ -56,3 +56,4 @@ test('box in a box', () => {
 
   expect(child.type).toEqual('box')
 })
+
