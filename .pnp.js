@@ -52,6 +52,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-config-standard", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:16.0.3"],
             ["eslint-import-resolver-node", "npm:0.3.4"],
             ["eslint-plugin-import", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:2.23.4"],
+            ["eslint-plugin-jasmine", "npm:4.1.2"],
             ["eslint-plugin-jest", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:24.3.6"],
             ["eslint-plugin-node", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:11.1.0"],
             ["eslint-plugin-promise", "npm:4.3.1"],
@@ -3447,6 +3448,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@types/eslint",
             "eslint"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["eslint-plugin-jasmine", [
+        ["npm:4.1.2", {
+          "packageLocation": "./.yarn/cache/eslint-plugin-jasmine-npm-4.1.2-e683344d05-90249a1b94.zip/node_modules/eslint-plugin-jasmine/",
+          "packageDependencies": [
+            ["eslint-plugin-jasmine", "npm:4.1.2"]
           ],
           "linkType": "HARD",
         }]
@@ -7202,6 +7212,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-config-standard", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:16.0.3"],
             ["eslint-import-resolver-node", "npm:0.3.4"],
             ["eslint-plugin-import", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:2.23.4"],
+            ["eslint-plugin-jasmine", "npm:4.1.2"],
             ["eslint-plugin-jest", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:24.3.6"],
             ["eslint-plugin-node", "virtual:ad4a5c85cd8f579b59b91fe9e11695da0c04fa2c165d7daca1e46901ec0510fe784e16a352381dca65da8c6c636a74e95c7948274feee7364fed92e52037d971#npm:11.1.0"],
             ["eslint-plugin-promise", "npm:4.3.1"],

@@ -3,7 +3,8 @@ module.exports = {
     node: true,
     browser: true,
     es2021: true,
-    'jest/globals': true
+    'jest/globals': true,
+    jasmine: true
   },
   extends: [
     'standard'
@@ -15,10 +16,11 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
-    'jest'
+    'jest',
+    'jasmine'
   ],
   rules: {
     'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }]
   },
-  ignorePatterns: ["knexfile.js"]
+  ignorePatterns: ['knexfile.js']
 }

@@ -2501,6 +2501,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-jasmine@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "eslint-plugin-jasmine@npm:4.1.2"
+  checksum: 90249a1b944a2a89a12718ad162b5f1561fc66c1774ca2727d9cc266c9d8c101051cd62ec497929f5ab9e58c2218d5c622122beb466a5203c6c12db904147416
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-jest@npm:^24.3.6":
   version: 24.3.6
   resolution: "eslint-plugin-jest@npm:24.3.6"
@@ -5795,6 +5802,7 @@ fsevents@^2.3.2:
     eslint-config-standard: latest
     eslint-import-resolver-node: ^0.3.4
     eslint-plugin-import: ^2.22.1
+    eslint-plugin-jasmine: ^4.1.2
     eslint-plugin-jest: ^24.3.6
     eslint-plugin-node: ^11.1.0
     eslint-plugin-promise: ^4.2.1
