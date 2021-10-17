@@ -1,5 +1,5 @@
 import * as blessed from 'blessed'
-import { TreecatElement } from './types'
+import { ContextElement, TreecatElement } from './types'
 import { Hook } from './Hook'
 
 export interface Fiber extends TreecatElement {
@@ -13,5 +13,6 @@ export interface Fiber extends TreecatElement {
   hooks?: Hook[];
   effects?: (() => (() => void) | void)[];
   effectCleanups?: (() => void)[];
+  contextProviders?: ContextElement[]
 }
 

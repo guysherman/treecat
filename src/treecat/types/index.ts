@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 export interface TreecatElement {
-  type?: string | FC;
+  type?: any;
   props: {
     children?: TreecatElement[];
     [x: string]: any;
@@ -8,4 +8,27 @@ export interface TreecatElement {
 }
 
 export type TreecatNode = TreecatElement | TreecatElement[]
-export type FC<T = Record<string, any>> = (props: T) => TreecatNode
+
+export interface FC<T = any> {
+  (props: T): ContextElement | TreecatNode
+}
+
+export interface ContextProviderProps<T> {
+  value: T;
+  children: TreecatNode;
+}
+export interface Context<T = any> {
+  defaultValue: T;
+  Provider: FC<ContextProviderProps<T>>;
+}
+
+export interface ContextElement {
+  value: any;
+  context: Context<any>;
+  children: TreecatNode;
+}
+export interface TypedContextElement<T = any> extends ContextElement {
+  value: T;
+  context: Context<T>;
+  children: TreecatNode;
+}

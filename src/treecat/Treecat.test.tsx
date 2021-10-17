@@ -2,7 +2,8 @@
 import * as blessed from 'blessed'
 import * as TreeCat from './index'
 import * as fs from 'fs'
-import { Fragment, useEffect, useState } from './index'
+import { Fragment, useContext, useEffect, useState } from './index'
+import { createContext } from './Context'
 
 let rootScreen: blessed.Widgets.Screen
 let outStream: fs.WriteStream
@@ -126,5 +127,36 @@ it('simple fragment example', async () => {
   const { children: [box] } = rootScreen
 
   expect(box).toBeTruthy()
+})
+
+const context = createContext('Default Text')
+const TestUseContextInner = () => {
+  const textContent = useContext(context)
+  return (
+    <box>
+      {textContent}
+    </box>
+  )
+}
+
+const TestUseContextTop = () => {
+  return (
+    <context.Provider value={'Real Text'}>
+      <TestUseContextInner />
+    </context.Provider>
+  )
+}
+
+it('simple context example', async () => {
+  const tree = <TestUseContextTop />
+  TreeCat.render(tree, rootScreen)
+
+  const p: Promise<void> = TreeCat.stopRendering()
+  jest.runAllTimers()
+  await p.then(() => true)
+
+  const { children: [box] } = rootScreen
+  expect(box).toBeTruthy()
+  expect((box as blessed.Widgets.BoxElement).content).toEqual('Real Text')
 })
 

@@ -1,6 +1,6 @@
 import { Fiber } from './Fiber'
 import { createDom } from './Dom'
-import { TreecatElement } from './types'
+import { TreecatElement, TreecatNode } from './types'
 
 export function performUnitOfWork (fiber: Fiber, setWipFiber: (fiber: Fiber) => void): [Fiber | null, Fiber[]] {
   let localDeletions: Fiber[]
@@ -37,10 +37,15 @@ function updateFunctionComponent (fiber: Fiber, setWipFiber: (fiber: Fiber) => v
     throw new Error('Invalid function component')
   }
   const returned = fiber.type(fiber.props)
-  if ('length' in returned) {
-    return reconcileChildren(fiber, returned)
+  if ('context' in returned && 'value' in returned) {
+    if (!fiber.contextProviders) {
+      fiber.contextProviders = [returned]
+    } else {
+      fiber.contextProviders.push(returned)
+    }
+    return reconcileChildren(fiber, returned.children)
   } else {
-    return reconcileChildren(fiber, [returned])
+    return reconcileChildren(fiber, returned)
   }
 }
 
@@ -54,11 +59,12 @@ function updateHostComponent (fiber: Fiber): Fiber[] {
   return localDeletions
 }
 
-function reconcileChildren (wipFiber: Fiber, elements: TreecatElement[]): Fiber[] {
+function reconcileChildren (wipFiber: Fiber, node: TreecatNode): Fiber[] {
   let index: number = 0
   let oldFiber: Fiber | null = wipFiber?.alternate?.child ?? null
   let prevSibling: Fiber | null = null
   const deletions: Fiber[] = []
+  const elements: TreecatElement[] = 'length' in node ? node : [node]
 
   while (index < elements.length || oldFiber !== null) {
     const element = elements[index]
@@ -75,7 +81,8 @@ function reconcileChildren (wipFiber: Fiber, elements: TreecatElement[]): Fiber[
         alternate: oldFiber,
         effectTag: 'UPDATE',
         effects: [],
-        effectCleanups: []
+        effectCleanups: [],
+        contextProviders: []
       }
     }
 
@@ -85,7 +92,8 @@ function reconcileChildren (wipFiber: Fiber, elements: TreecatElement[]): Fiber[
         parent: wipFiber,
         effectTag: 'PLACEMENT',
         effects: [],
-        effectCleanups: []
+        effectCleanups: [],
+        contextProviders: []
       }
     }
 

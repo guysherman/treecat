@@ -7,6 +7,7 @@ import { commitWork } from './Dom'
 import { createHook as createUseState } from './hooks/useState'
 import { createHook as createUseEffect } from './hooks/useEffect'
 import { createHook as createUseRoot } from './hooks/useRoot'
+import { createHook as createUseContext } from './hooks/useContext'
 export { createElement, JSX } from './jsx'
 export { Fragment } from './baseComponents'
 
@@ -24,6 +25,7 @@ const context: RendererContext = {
 export const useState = createUseState(getContext)
 export const useEffect = createUseEffect(getContext)
 export const useRoot = createUseRoot(getContext)
+export const useContext = createUseContext(getContext)
 
 export function render (element: TreecatElement, container: blessed.Widgets.Screen) {
   context.blessedRoot = container
