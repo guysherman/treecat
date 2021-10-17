@@ -1,5 +1,5 @@
 import * as blessed from 'blessed'
-import { ElementDescription } from './ElementDescription'
+import { TreecatElement } from './types/TreecatElement'
 import { Fiber } from './Fiber'
 import { RendererContext } from './RendererContext'
 import { performUnitOfWork } from './FiberTree'
@@ -25,7 +25,7 @@ export const useState = createUseState(getContext)
 export const useEffect = createUseEffect(getContext)
 export const useRoot = createUseRoot(getContext)
 
-export function render (element: ElementDescription, container: blessed.Widgets.Screen) {
+export function render (element: TreecatElement, container: blessed.Widgets.Screen) {
   context.blessedRoot = container
   context.wipRoot = {
     hookIndex: 0,

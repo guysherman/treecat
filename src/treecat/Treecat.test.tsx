@@ -15,6 +15,13 @@ beforeEach(() => {
   rootScreen = blessed.screen({ output: inStream, input: outStream })
 })
 
+afterEach(() => {
+  rootScreen.destroy()
+  outStream.close()
+  inStream.close()
+  jest.useRealTimers()
+})
+
 test('simple box', async () => {
   const tree = <box />
   TreeCat.render(tree, rootScreen)
@@ -121,9 +128,3 @@ it('simple fragment example', async () => {
   expect(box).toBeTruthy()
 })
 
-afterEach(() => {
-  rootScreen.destroy()
-  outStream.close()
-  inStream.close()
-  jest.useRealTimers()
-})

@@ -1,17 +1,10 @@
-import { ElementDescription } from '../ElementDescription'
+import { TreecatElement } from '../types/TreecatElement'
+import { TreecatNode } from '../types/TreecatNode'
 
 type FragmentProps = {
-  children: ElementDescription[] | ElementDescription;
+  children: TreecatNode
 }
 
-function isElementDescriptionArray (children: ElementDescription[] | ElementDescription): children is ElementDescription[] {
-  return (children as ElementDescription[]).length !== undefined
-}
-
-export function Fragment ({ children }: FragmentProps): ElementDescription[] {
-  if (isElementDescriptionArray(children)) {
-    return children
-  } else {
-    return [children]
-  }
+export function Fragment ({ children }: FragmentProps): TreecatNode {
+  return children
 }

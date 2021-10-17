@@ -1,4 +1,4 @@
-import { ElementDescription } from '../ElementDescription'
+import { TreecatElement } from '../types/TreecatElement'
 
 
 // eslint-disable-next-line no-unused-vars
@@ -38,7 +38,7 @@ export namespace JSX {
   }
 }
 
-export function createElement (type: any, props: any, ...children: any): ElementDescription {
+export function createElement (type: any, props: any, ...children: any): TreecatElement {
   return {
     type: type,
     props: {
@@ -54,7 +54,7 @@ export function createElement (type: any, props: any, ...children: any): Element
 }
 
 
-function createTextElement (text: string): ElementDescription {
+function createTextElement (text: string): TreecatElement {
   return {
     type: 'TEXT_ELEMENT',
     props: {

@@ -1,8 +1,8 @@
 import * as blessed from 'blessed'
-import { ElementDescription } from './ElementDescription'
+import { TreecatElement } from './types/TreecatElement'
 import { Hook } from './Hook'
 
-export type Fiber = ElementDescription & {
+export type Fiber = TreecatElement & {
   hookIndex?: number;
   dom?: blessed.Widgets.Node;
   parent?: Fiber;
