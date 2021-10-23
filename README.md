@@ -1,4 +1,6 @@
-# sql-commander
+# Treecat
+
+A react-like wrapper around https://github.com/chjj/blessed
 
 ## Get Started
 
