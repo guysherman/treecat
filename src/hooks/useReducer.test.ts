@@ -13,7 +13,7 @@ describe('useReducer', () => {
 
     const useReducer = createHook(getContextBroken)
 
-    expect(() => useReducer((state, action) => state + action, 0)).toThrow()
+    expect(() => useReducer((state, action) => state + (action as number), 0)).toThrow()
   })
 
   it('should not throw if RendererContext is good', () => {

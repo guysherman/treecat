@@ -13,7 +13,7 @@ export function createHook (getContext: () => RendererContext):<T>(reducer: Redu
       }
 
       if (hook.reducer) {
-        const reducerFunction = hook.reducer
+        const reducerFunction: Reducer<T> = hook.reducer as Reducer<T>
         const dispatch = (action: any): void => {
           const newState = reducerFunction(hook.state, action)
           hook.state = newState
