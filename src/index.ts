@@ -8,8 +8,10 @@ import { createHook as createUseState } from './hooks/useState'
 import { createHook as createUseEffect } from './hooks/useEffect'
 import { createHook as createUseRoot } from './hooks/useRoot'
 import { createHook as createUseContext } from './hooks/useContext'
+import { createHook as createUseReducer } from './hooks/useReducer'
 export { createElement, JSX } from './jsx'
 export { Fragment } from './baseComponents'
+export { TreecatElement, TreecatNode, ContextProviderProps, Context, ContextElement, TypedContextElement, BaseReducer, Reducer } from './types'
 
 const context: RendererContext = {
   nextUnitOfWork: null,
@@ -26,6 +28,8 @@ export const useState = createUseState(getContext)
 export const useEffect = createUseEffect(getContext)
 export const useRoot = createUseRoot(getContext)
 export const useContext = createUseContext(getContext)
+export const useReducer = createUseReducer(getContext)
+
 
 export function render (element: TreecatElement, container: blessed.Widgets.Screen) {
   context.blessedRoot = container
