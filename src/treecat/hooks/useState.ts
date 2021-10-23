@@ -7,8 +7,7 @@ export function createHook (getContext: () => RendererContext): (...args: any[])
     if (context?.wipFiber?.hookIndex !== undefined && context?.wipFiber?.hooks) {
       const oldHook: Hook | null = context.wipFiber?.alternate?.hooks?.[context.wipFiber.hookIndex] ?? null
       const hook: Hook = {
-        state: oldHook?.state ?? initial,
-        queue: []
+        state: oldHook?.state ?? initial
       }
 
       const setState = (value: any): void => {

@@ -1,6 +1,8 @@
+import { BaseReducer } from './types'
+
 export type Hook = {
   state: any;
-  queue: ((...args: any[]) => any)[];
+  reducer?: BaseReducer;
   deps?: any[];
 }
 

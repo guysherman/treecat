@@ -16,7 +16,6 @@ export function createHook (getContext: () => RendererContext): (...args: any[])
 
       const hook: Hook = {
         state: oldHook?.state ?? effect,
-        queue: [],
         deps: deps
       }
 

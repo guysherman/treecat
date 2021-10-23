@@ -32,3 +32,10 @@ export interface TypedContextElement<T = any> extends ContextElement {
   context: Context<T>;
   children: TreecatNode;
 }
+
+export interface BaseReducer {}
+
+export interface Reducer<T> extends BaseReducer {
+  (state: T, action: any): T;
+}
+

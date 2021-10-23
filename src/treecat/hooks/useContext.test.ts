@@ -71,7 +71,7 @@ describe('useContext', () => {
     expect(value).toEqual('default')
   })
 
-  test.only('should return the correct value from the nearest provider', () => {
+  test('should return the correct value from the nearest provider', () => {
     const context = createContext('default')
     const fib1: Fiber = {
       hookIndex: 0,

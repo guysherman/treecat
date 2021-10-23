@@ -12,8 +12,7 @@ export function createHook (getContext: () => RendererContext): (...args: any[])
         const provider = currentFiber?.contextProviders?.find((provider) => provider.context === context) ?? undefined
         if (provider) {
           const hook: Hook = {
-            state: provider.value,
-            queue: []
+            state: provider.value
           }
 
           rendererContext.wipFiber.hooks.push(hook)
