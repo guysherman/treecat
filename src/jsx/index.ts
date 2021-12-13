@@ -39,11 +39,19 @@ export namespace JSX {
 }
 
 export function createElement (type: any, props: any, ...children: any): TreecatElement {
+  const flatChildren: any[] = []
+  children.forEach((child: any) => {
+    if (Array.isArray(child)) {
+      flatChildren.push(...child)
+    } else {
+      flatChildren.push(child)
+    }
+  })
   return {
     type: type,
     props: {
       ...props,
-      children: children.map((child: any) =>
+      children: flatChildren.map((child: any) =>
         typeof child === 'object'
           ? child
           : createTextElement(child)

@@ -160,3 +160,24 @@ it('simple context example', async () => {
   expect((box as blessed.Widgets.BoxElement).content).toEqual('Real Text')
 })
 
+const TestMap = () => {
+  const items = ['a', 'b', 'c']
+  return (
+    <box>
+    { items.map((item, index) => <box top={index}>{item}</box>) }
+    </box>)
+}
+
+it('should render the result of a map', async () => {
+  const tree = <TestMap />
+  TreeCat.render(tree, rootScreen)
+
+  const p: Promise<void> = TreeCat.stopRendering()
+  jest.runAllTimers()
+  await p.then(() => true)
+
+  const { children: [box] } = rootScreen
+  expect(box).toBeTruthy()
+  expect((box as blessed.Widgets.BoxElement).children).toHaveLength(3)
+})
+
