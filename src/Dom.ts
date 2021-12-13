@@ -5,84 +5,89 @@ import { createNode } from './baseComponents'
 // eslint-disable-next-line no-unused-vars
 export function createDom (fiber: Fiber): blessed.Widgets.BlessedElement | undefined {
   let el: blessed.Widgets.BlessedElement
-  switch (fiber.type) {
-    case 'screen':
-      throw Error('Creating screens via JSX is not supported')
-    case 'box':
-      el = createNode<blessed.Widgets.BoxElement, blessed.Widgets.BoxOptions>(fiber, blessed.box)
-      break
-    case 'text':
-      el = createNode<blessed.Widgets.TextElement, blessed.Widgets.TextOptions>(fiber, blessed.text)
-      break
-    case 'line':
-      el = createNode<blessed.Widgets.LineElement, blessed.Widgets.LineOptions>(fiber, blessed.line)
-      break
-    case 'list':
-      el = createList(fiber)
-      break
-    case 'filemanager':
-      el = createNode<blessed.Widgets.FileManagerElement, blessed.Widgets.FileManagerOptions>(fiber, blessed.filemanager)
-      break
-    case 'listtable':
-      el = createNode<blessed.Widgets.ListTableElement, blessed.Widgets.ListTableOptions>(fiber, blessed.listtable)
-      break
-    case 'listbar':
-      el = createNode<blessed.Widgets.ListbarElement, blessed.Widgets.ListbarOptions>(fiber, blessed.listbar)
-      break
-    case 'form':
-      el = createNode<blessed.Widgets.FormElement<any>, blessed.Widgets.FormOptions>(fiber, blessed.form)
-      break
-    case 'textarea':
-      el = createNode<blessed.Widgets.TextareaElement, blessed.Widgets.TextareaOptions>(fiber, blessed.textarea)
-      break
-    case 'textbox':
-      el = createNode<blessed.Widgets.TextboxElement, blessed.Widgets.TextboxOptions>(fiber, blessed.textbox)
-      break
-    case 'button':
-      el = createNode<blessed.Widgets.ButtonElement, blessed.Widgets.ButtonOptions>(fiber, blessed.button)
-      break
-    case 'checkbox':
-      el = createNode<blessed.Widgets.CheckboxElement, blessed.Widgets.CheckboxOptions>(fiber, blessed.checkbox)
-      break
-    case 'radioset':
-      el = createNode<blessed.Widgets.RadioSetElement, blessed.Widgets.RadioSetOptions>(fiber, blessed.radioset)
-      break
-    case 'radiobutton':
-      el = createNode<blessed.Widgets.RadioButtonElement, blessed.Widgets.RadioButtonOptions>(fiber, blessed.radiobutton)
-      break
-    case 'prompt':
-      el = createNode<blessed.Widgets.PromptElement, blessed.Widgets.PromptOptions>(fiber, blessed.prompt)
-      break
-    case 'question':
-      el = createNode<blessed.Widgets.QuestionElement, blessed.Widgets.QuestionOptions>(fiber, blessed.question)
-      break
-    case 'message':
-      el = createNode<blessed.Widgets.MessageElement, blessed.Widgets.MessageOptions>(fiber, blessed.message)
-      break
-    case 'loading':
-      el = createNode<blessed.Widgets.LoadingElement, blessed.Widgets.LoadingOptions>(fiber, blessed.loading)
-      break
-    case 'progressbar':
-      el = createNode<blessed.Widgets.ProgressBarElement, blessed.Widgets.ProgressBarOptions>(fiber, blessed.progressbar)
-      break
-    case 'log':
-      el = createNode<blessed.Widgets.Log, blessed.Widgets.LogOptions>(fiber, blessed.log)
-      break
-    case 'table':
-      el = createNode<blessed.Widgets.TableElement, blessed.Widgets.TableOptions>(fiber, blessed.table)
-      break
-    case 'TEXT_ELEMENT':
-      if (fiber?.parent?.dom) {
-        const parentElement = fiber.parent.dom as blessed.Widgets.BlessedElement
-        if (parentElement) {
-          parentElement.setContent(fiber.props.nodeValue)
+  try {
+    switch (fiber.type) {
+      case 'screen':
+        throw Error('Creating screens via JSX is not supported')
+      case 'box':
+        el = createNode<blessed.Widgets.BoxElement, blessed.Widgets.BoxOptions>(fiber, blessed.box)
+        break
+      case 'text':
+        el = createNode<blessed.Widgets.TextElement, blessed.Widgets.TextOptions>(fiber, blessed.text)
+        break
+      case 'line':
+        el = createNode<blessed.Widgets.LineElement, blessed.Widgets.LineOptions>(fiber, blessed.line)
+        break
+      case 'list':
+        el = createList(fiber)
+        break
+      case 'filemanager':
+        el = createNode<blessed.Widgets.FileManagerElement, blessed.Widgets.FileManagerOptions>(fiber, blessed.filemanager)
+        break
+      case 'listtable':
+        el = createNode<blessed.Widgets.ListTableElement, blessed.Widgets.ListTableOptions>(fiber, blessed.listtable)
+        break
+      case 'listbar':
+        el = createNode<blessed.Widgets.ListbarElement, blessed.Widgets.ListbarOptions>(fiber, blessed.listbar)
+        break
+      case 'form':
+        el = createNode<blessed.Widgets.FormElement<any>, blessed.Widgets.FormOptions>(fiber, blessed.form)
+        break
+      case 'textarea':
+        el = createNode<blessed.Widgets.TextareaElement, blessed.Widgets.TextareaOptions>(fiber, blessed.textarea)
+        break
+      case 'textbox':
+        el = createNode<blessed.Widgets.TextboxElement, blessed.Widgets.TextboxOptions>(fiber, blessed.textbox)
+        break
+      case 'button':
+        el = createNode<blessed.Widgets.ButtonElement, blessed.Widgets.ButtonOptions>(fiber, blessed.button)
+        break
+      case 'checkbox':
+        el = createNode<blessed.Widgets.CheckboxElement, blessed.Widgets.CheckboxOptions>(fiber, blessed.checkbox)
+        break
+      case 'radioset':
+        el = createNode<blessed.Widgets.RadioSetElement, blessed.Widgets.RadioSetOptions>(fiber, blessed.radioset)
+        break
+      case 'radiobutton':
+        el = createNode<blessed.Widgets.RadioButtonElement, blessed.Widgets.RadioButtonOptions>(fiber, blessed.radiobutton)
+        break
+      case 'prompt':
+        el = createNode<blessed.Widgets.PromptElement, blessed.Widgets.PromptOptions>(fiber, blessed.prompt)
+        break
+      case 'question':
+        el = createNode<blessed.Widgets.QuestionElement, blessed.Widgets.QuestionOptions>(fiber, blessed.question)
+        break
+      case 'message':
+        el = createNode<blessed.Widgets.MessageElement, blessed.Widgets.MessageOptions>(fiber, blessed.message)
+        break
+      case 'loading':
+        el = createNode<blessed.Widgets.LoadingElement, blessed.Widgets.LoadingOptions>(fiber, blessed.loading)
+        break
+      case 'progressbar':
+        el = createNode<blessed.Widgets.ProgressBarElement, blessed.Widgets.ProgressBarOptions>(fiber, blessed.progressbar)
+        break
+      case 'log':
+        el = createNode<blessed.Widgets.Log, blessed.Widgets.LogOptions>(fiber, blessed.log)
+        break
+      case 'table':
+        el = createNode<blessed.Widgets.TableElement, blessed.Widgets.TableOptions>(fiber, blessed.table)
+        break
+      case 'TEXT_ELEMENT':
+        if (fiber?.parent?.dom) {
+          const parentElement = fiber.parent.dom as blessed.Widgets.BlessedElement
+          if (parentElement) {
+            parentElement.setContent(fiber.props.nodeValue)
+          }
+          return
+        } else {
+          throw Error('Text can only exist as a child of a BlessedElement')
         }
+      default:
         return
-      } else {
-        throw Error('Text can only exist as a child of a BlessedElement')
-      }
-    default:
-      return
+    }
+  } catch (e) {
+    console.log('createDom', { e })
+    throw e
   }
 
   return el

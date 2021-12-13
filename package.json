@@ -34,7 +34,10 @@
   },
   "dependencies": {
     "@types/blessed": "^0.1.17",
-    "@yarnpkg/pnpify": "^3.0.0-rc.6",
+    "blessed": "^0.1.81"
+  },
+  "peerDependencies": {
+    "@types/blessed": "^0.1.17",
     "blessed": "^0.1.81"
   }
 }

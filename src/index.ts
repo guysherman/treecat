@@ -11,7 +11,8 @@ import { createHook as createUseContext } from './hooks/useContext'
 import { createHook as createUseReducer } from './hooks/useReducer'
 export { createElement, JSX } from './jsx'
 export { Fragment } from './baseComponents'
-export { TreecatElement, TreecatNode, ContextProviderProps, Context, ContextElement, TypedContextElement, BaseReducer, Reducer } from './types'
+export { TreecatElement, TreecatNode, ContextProviderProps, Context, ContextElement, TypedContextElement, BaseReducer, Reducer, FC } from './types'
+export { blessed }
 
 const context: RendererContext = {
   nextUnitOfWork: null,
@@ -30,6 +31,12 @@ export const useRoot = createUseRoot(getContext)
 export const useContext = createUseContext(getContext)
 export const useReducer = createUseReducer(getContext)
 
+export function createRootScreen (): blessed.Widgets.Screen {
+  const rootScreen: blessed.Widgets.Screen = blessed.screen({
+    sendFocus: true
+  })
+  return rootScreen
+}
 
 export function render (element: TreecatElement, container: blessed.Widgets.Screen) {
   context.blessedRoot = container
