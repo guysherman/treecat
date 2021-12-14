@@ -387,3 +387,70 @@ test('commitWork - function component with cleanup - delete', () => {
   expect(mock).toHaveBeenCalled()
 })
 
+test.only('commitWork - list with only selected changed', () => {
+  // First we set up the dom
+  const bList = blessed.list({ items: ['a', 'b'] })
+  const bList2 = blessed.list({ items: ['a', 'b'] })
+  rootScreen.append(bList)
+
+  // Now we set up a fiber tree to match
+  const root: Fiber = {
+    dom: rootScreen,
+    effects: [],
+    effectCleanups: [],
+    props: {
+      children: []
+
+    }
+  }
+
+  const mock = jest.fn()
+
+  const fc: Fiber = {
+    type: () => [],
+    props: {
+      children: []
+    },
+    parent: root,
+    effectTag: 'UPDATE',
+    effects: [],
+    effectCleanups: [mock]
+  }
+  root.props.children?.push(fc)
+  root.child = fc
+
+  const oldb: Fiber = {
+    dom: bList,
+    type: 'list',
+    effects: [],
+    effectCleanups: [],
+    props: {
+      selected: 0,
+      children: []
+    },
+    parent: fc
+  }
+
+  const b: Fiber = {
+    dom: bList2,
+    type: 'list',
+    alternate: oldb,
+    effectTag: 'UPDATE',
+    effects: [],
+    effectCleanups: [],
+    props: {
+      selected: 1,
+      children: []
+    },
+    parent: fc
+  }
+  fc.props.children?.push(b)
+  fc.child = b
+
+  expect((bList as any).selected).toBe(0)
+  commitWork(b)
+
+  expect(b.dom).toBe(bList)
+  expect((bList as any).selected).toBe(1)
+})
+

@@ -103,6 +103,7 @@ function createList (fiber: Fiber): blessed.Widgets.BlessedElement {
   return el
 }
 
+
 export function commitWork (fiber: Fiber | null) {
   if (!fiber) {
     return
@@ -123,19 +124,8 @@ export function commitWork (fiber: Fiber | null) {
       if (fiber.props.focused) {
         (fiber.dom as blessed.Widgets.BlessedElement).focus()
       }
-    } else if (fiber.effectTag === 'UPDATE' && fiber?.alternate?.dom && fiber.dom) {
-      const childNodes: blessed.Widgets.Node[] = [...(fiber.alternate.dom.children)]
-
-      for (let i = 0; i < childNodes.length; i++) {
-        const cn: blessed.Widgets.Node = childNodes[0]
-        cn.detach()
-        fiber.dom.append(cn)
-      }
-      domParent.remove(fiber.alternate.dom)
-      domParent.append(fiber.dom)
-      if (fiber.props.focused) {
-        fiber.dom.screen.focused = fiber.dom as blessed.Widgets.BlessedElement
-      }
+    } else if (fiber.effectTag === 'UPDATE') {
+      updateDom(fiber, domParent)
     } else if (fiber.effectTag === 'DELETION') {
       commitDelete(fiber, domParent)
     }
@@ -159,6 +149,67 @@ export function commitWork (fiber: Fiber | null) {
 
   commitWork(fiber.sibling ?? null)
 }
+
+function updateDom (fiber: Fiber, domParent: blessed.Widgets.Node) {
+  try {
+    switch (fiber.type) {
+      case 'list':
+        updateList(fiber, domParent)
+        break
+      default:
+        replaceWithNew(fiber, domParent)
+        break
+    }
+  } catch (e) {
+    console.error('updateDom', { error: e })
+    throw e
+  }
+}
+
+function updateList (fiber: Fiber, domParent: blessed.Widgets.Node) {
+  if (fiber?.alternate?.dom && fiber.dom) {
+    const differentProps = compareProps(fiber.props, fiber.alternate.props)
+    // Special case if it is just the selected index that has changed, handling
+    // proper dom-style updates are a bridge to far at the moment
+    if (differentProps.length === 1 && differentProps[0][0] === 'selected') {
+      fiber.dom = fiber.alternate.dom;
+      (fiber.dom as blessed.Widgets.ListElement).select(fiber.props.selected)
+    } else {
+      replaceWithNew(fiber, domParent)
+    }
+  }
+}
+
+function compareProps (newProps: Record<string, any>, oldProps: Record<string, any>): Record<string, any> {
+  const newEntries = Object.entries<any>(newProps)
+  const changedEntries = newEntries.filter(([key, value]) => {
+    if (typeof value === 'object' || Array.isArray(value)) {
+      return JSON.stringify(value) !== JSON.stringify(oldProps[key])
+    } else {
+      return value !== oldProps[key]
+    }
+  })
+
+  return changedEntries
+}
+
+function replaceWithNew (fiber: Fiber, domParent: blessed.Widgets.Node) {
+  if (fiber?.alternate?.dom && fiber.dom) {
+    const childNodes: blessed.Widgets.Node[] = [...(fiber.alternate.dom.children)]
+
+    for (let i = 0; i < childNodes.length; i++) {
+      const cn: blessed.Widgets.Node = childNodes[0]
+      cn.detach()
+      fiber.dom.append(cn)
+    }
+    domParent.remove(fiber.alternate.dom)
+    domParent.append(fiber.dom)
+    if (fiber.props.focused) {
+      fiber.dom.screen.focused = fiber.dom as blessed.Widgets.BlessedElement
+    }
+  }
+}
+
 
 function commitDelete (fiber: Fiber | null, domParent: blessed.Widgets.Node) {
   if (!fiber) {
