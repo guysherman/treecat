@@ -10,20 +10,20 @@ Issues and comments welcome :)
 
 ### Install treecat and its peer dependencies
 ```
-npm i treecat blessed @types/blessed
+npm i @guysherman/treecat blessed @types/blessed
 ```
 
 ### Basic use-case
 
 ```
 /** @jsx TreeCat.createElement **/
-import * as TreeCat from 'treecat';
+import * as TreeCat from '@guysherman/treecat';
 import * as blessed from 'blessed';
 import { MainScreen } from './screens/MainScreen';
 
 const main = async () => {
   const rootScreen: blessed.Widgets.Screen = TreeCat.createRootScreen();
-  rootScreen.program.on('keypress', (_ch: string, key: TreeCat.blessed.Widgets.Events.IKeyEventArg) => {
+  rootScreen.program.on('keypress', (_ch: string, key: blessed.Widgets.Events.IKeyEventArg) => {
     if (key.full === 'C-c') {
       process.exit(0);
     }
