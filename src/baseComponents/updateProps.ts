@@ -1,6 +1,9 @@
 import * as blessed from 'blessed';
 import { Fiber } from '../Fiber';
 import { updatableProps as listUpdatableProps } from './List';
+import { updatableProps as nodeUpdatableProps } from './Node';
+import { updatableProps as elementUpdatableProps } from './Element';
+import { updatableProps as boxUpdatableProps } from './Box';
 
 export const eventPrefix = 'on';
 export const keyEventPrefix = 'keyon';
@@ -31,12 +34,16 @@ export const getEvents = (props: Record<string, unknown>) => Object.entries(prop
 export const getProps = (props: Record<string, unknown>) => Object.entries(props).filter(([key]) => isProp(key));
 
 const propUpdaters: Record<string, Record<string, PropUpdater>> = {
+  node: nodeUpdatableProps,
+  element: elementUpdatableProps,
+  box: boxUpdatableProps,
   list: listUpdatableProps,
 };
 
 export function updateProps(fiber: Fiber): boolean {
   if (fiber?.alternate?.dom && fiber.dom) {
     if (!isUpdatable(fiber)) {
+      console.error('Potential Missing Props:', { props: fiber.props });
       return false;
     }
     // We want to update the old one, so we carry it forward into this fiber iteration
