@@ -2,8 +2,10 @@
   "name": "@guysherman/treecat",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist/"],
-  "version": "0.0.1",
+  "files": [
+    "dist/"
+  ],
+  "version": "0.0.2",
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "tsc --project ./tsconfig.json",
