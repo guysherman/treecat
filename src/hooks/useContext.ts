@@ -1,32 +1,33 @@
-import { Fiber } from '../Fiber'
-import { Hook } from '../Hook'
-import { RendererContext } from '../RendererContext'
-import { Context } from '../types'
+import { Fiber } from '../Fiber';
+import { Hook } from '../Hook';
+import { RendererContext } from '../RendererContext';
+import { Context } from '../types';
 
-export function createHook (getContext: () => RendererContext): (...args: any[]) => any {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createHook(getContext: () => RendererContext): (...args: any[]) => any {
   return <T>(context: Context<T>): T => {
-    const rendererContext = getContext()
+    const rendererContext = getContext();
     if (rendererContext?.wipFiber?.hookIndex !== undefined && rendererContext?.wipFiber?.hooks) {
-      let currentFiber: Fiber | undefined = rendererContext.wipFiber
+      let currentFiber: Fiber | undefined = rendererContext.wipFiber;
       while (currentFiber) {
-        const provider = currentFiber?.contextProviders?.find((provider) => provider.context === context) ?? undefined
+        const provider = currentFiber?.contextProviders?.find((provider) => provider.context === context) ?? undefined;
         if (provider) {
           const hook: Hook = {
-            state: provider.value
-          }
+            state: provider.value,
+          };
 
-          rendererContext.wipFiber.hooks.push(hook)
-          rendererContext.wipFiber.hookIndex++
+          rendererContext.wipFiber.hooks.push(hook);
+          rendererContext.wipFiber.hookIndex++;
 
-          return provider.value
+          return provider.value;
         }
 
-        currentFiber = currentFiber.parent
+        currentFiber = currentFiber.parent;
       }
 
-      return context.defaultValue
+      return context.defaultValue;
     } else {
-      throw new Error('Either context is missing, or wipFiber has been incorrectly prepared')
+      throw new Error('Either context is missing, or wipFiber has been incorrectly prepared');
     }
-  }
+  };
 }

@@ -1,59 +1,62 @@
-import { Hook } from '../Hook'
-import { RendererContext } from '../RendererContext'
+import { Hook } from '../Hook';
+import { RendererContext } from '../RendererContext';
 
-export function createHook (getContext: () => RendererContext): (...args: any[]) => any {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createHook(getContext: () => RendererContext): (...args: any[]) => any {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (effect: (...eventArgs: any[]) => void, deps?: any[]) => {
     if (typeof effect !== 'function') {
-      throw new Error('Effect is not a function.')
+      throw new Error('Effect is not a function.');
     }
-    const context = getContext()
+    const context = getContext();
     if (context?.wipFiber?.hookIndex !== undefined && context?.wipFiber?.hooks) {
       if (!context.wipFiber.effects) {
-        context.wipFiber.effects = []
+        context.wipFiber.effects = [];
       }
 
-      const oldHook: Hook | null = context.wipFiber?.alternate?.hooks?.[context.wipFiber.hookIndex] ?? null
+      const oldHook: Hook | null = context.wipFiber?.alternate?.hooks?.[context.wipFiber.hookIndex] ?? null;
 
       const hook: Hook = {
         state: oldHook?.state ?? effect,
-        deps: deps
-      }
+        deps: deps,
+      };
 
-      const depsSame = areDepsSame(oldHook?.deps ?? undefined, deps)
+      const depsSame = areDepsSame(oldHook?.deps ?? undefined, deps);
       if (!depsSame) {
         if (context.wipFiber.alternate?.effectCleanups) {
           for (const cleanup of context.wipFiber.alternate.effectCleanups) {
-            cleanup()
+            cleanup();
           }
         }
-        context.wipFiber.effects.push(effect)
+        context.wipFiber.effects.push(effect);
       }
 
-      context.wipFiber.hooks.push(hook)
-      context.wipFiber.hookIndex++
+      context.wipFiber.hooks.push(hook);
+      context.wipFiber.hookIndex++;
     } else {
-      throw new Error('Either context is missing, or wipFiber has been incorrectly prepared')
+      throw new Error('Either context is missing, or wipFiber has been incorrectly prepared');
     }
-  }
+  };
 }
 
-function areDepsSame (oldDeps?: any[], newDeps?: any[]): boolean {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function areDepsSame(oldDeps?: any[], newDeps?: any[]): boolean {
   if (!newDeps) {
-    return false
+    return false;
   }
 
   if (!oldDeps) {
-    return false
+    return false;
   }
 
   if (oldDeps.length !== newDeps.length) {
-    return false
+    return false;
   }
 
-  let depsSame = true
+  let depsSame = true;
   for (let i = 0; i < newDeps.length && i < oldDeps.length; i++) {
-    depsSame = depsSame && Object.is(oldDeps[i], newDeps[i])
+    depsSame = depsSame && Object.is(oldDeps[i], newDeps[i]);
   }
 
-  return depsSame
+  return depsSame;
 }

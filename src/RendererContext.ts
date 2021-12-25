@@ -1,5 +1,5 @@
-import * as blessed from 'blessed'
-import { Fiber } from './Fiber'
+import * as blessed from 'blessed';
+import { Fiber } from './Fiber';
 
 export type RendererContext = {
   nextUnitOfWork: Fiber | null;
@@ -9,5 +9,6 @@ export type RendererContext = {
   blessedRoot: blessed.Widgets.Screen | null;
   deletions: Fiber[];
   shouldStopWorkloop: boolean;
-  workLoopResolve: any;
-}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  workLoopResolve: ((value: void | PromiseLike<void>) => void) | null;
+};

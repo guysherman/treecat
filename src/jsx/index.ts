@@ -1,5 +1,6 @@
-import { TreecatElement } from '../types'
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-namespace */
+import { TreecatElement } from '../types';
 
 // eslint-disable-next-line no-unused-vars
 export namespace JSX {
@@ -34,41 +35,34 @@ export namespace JSX {
   }
 
   export interface ElementChildrenAttribute {
-    children: {}; // specify children name to use
+    children: Record<string, any>; // specify children name to use
   }
 }
 
-export function createElement (type: any, props: any, ...children: any): TreecatElement {
-  const flatChildren: any[] = []
+export function createElement(type: any, props: any, ...children: any): TreecatElement {
+  const flatChildren: any[] = [];
   children.forEach((child: any) => {
     if (Array.isArray(child)) {
-      flatChildren.push(...child)
+      flatChildren.push(...child);
     } else {
-      flatChildren.push(child)
+      flatChildren.push(child);
     }
-  })
+  });
   return {
     type: type,
     props: {
       ...props,
-      children: flatChildren.map((child: any) =>
-        typeof child === 'object'
-          ? child
-          : createTextElement(child)
-      )
-
-    }
-  }
+      children: flatChildren.map((child: any) => (typeof child === 'object' ? child : createTextElement(child))),
+    },
+  };
 }
 
-
-function createTextElement (text: string): TreecatElement {
+function createTextElement(text: string): TreecatElement {
   return {
     type: 'TEXT_ELEMENT',
     props: {
       nodeValue: `${text}`,
-      children: []
-    }
-  }
+      children: [],
+    },
+  };
 }
-

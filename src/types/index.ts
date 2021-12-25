@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-use-before-define */
 export interface TreecatElement {
   type?: any;
   props: {
     children?: TreecatElement[];
     [x: string]: any;
-  }
+  };
 }
 
-export type TreecatNode = TreecatElement | TreecatElement[]
+export type TreecatNode = TreecatElement | TreecatElement[];
 
 export interface FC<T = any> {
-  (props: T): ContextElement | TreecatNode
+  (props: T): ContextElement | TreecatNode;
 }
 
 export interface ContextProviderProps<T> {
@@ -41,4 +42,3 @@ export interface Reducer<T> extends BaseReducer {
   (state: any, action: any): any;
   (state: T, action: any): T;
 }
-

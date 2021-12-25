@@ -1,76 +1,76 @@
-import { Fiber } from './Fiber'
-import { createDom } from './Dom'
-import { TreecatElement, TreecatNode } from './types'
+import { Fiber } from './Fiber';
+import { createDom } from './Dom';
+import { TreecatElement, TreecatNode } from './types';
 
-export function performUnitOfWork (fiber: Fiber, setWipFiber: (fiber: Fiber) => void): [Fiber | null, Fiber[]] {
-  let localDeletions: Fiber[]
+export function performUnitOfWork(fiber: Fiber, setWipFiber: (fiber: Fiber) => void): [Fiber | null, Fiber[]] {
+  let localDeletions: Fiber[];
 
   if (fiber.type instanceof Function) {
-    localDeletions = updateFunctionComponent(fiber, setWipFiber)
+    localDeletions = updateFunctionComponent(fiber, setWipFiber);
   } else {
-    localDeletions = updateHostComponent(fiber)
+    localDeletions = updateHostComponent(fiber);
   }
 
   if (fiber.child) {
-    return [fiber.child, localDeletions]
+    return [fiber.child, localDeletions];
   }
 
-  let nextFiber: Fiber | null = fiber
+  let nextFiber: Fiber | null = fiber;
   while (nextFiber) {
     if (nextFiber.sibling) {
-      return [nextFiber.sibling, localDeletions]
+      return [nextFiber.sibling, localDeletions];
     }
-    nextFiber = nextFiber?.parent ?? null
+    nextFiber = nextFiber?.parent ?? null;
   }
 
-  return [nextFiber, localDeletions]
+  return [nextFiber, localDeletions];
 }
 
-function updateFunctionComponent (fiber: Fiber, setWipFiber: (fiber: Fiber) => void): Fiber[] {
-  fiber.hooks = []
-  fiber.hookIndex = 0
-  setWipFiber(fiber)
+function updateFunctionComponent(fiber: Fiber, setWipFiber: (fiber: Fiber) => void): Fiber[] {
+  fiber.hooks = [];
+  fiber.hookIndex = 0;
+  setWipFiber(fiber);
   if (!fiber.type) {
-    throw new Error('fiber.type was undefined')
+    throw new Error('fiber.type was undefined');
   }
   if (typeof fiber.type === 'string') {
-    throw new Error('Invalid function component')
+    throw new Error('Invalid function component');
   }
-  const returned = fiber.type(fiber.props)
+  const returned = fiber.type(fiber.props);
   if ('context' in returned && 'value' in returned) {
     if (!fiber.contextProviders) {
-      fiber.contextProviders = [returned]
+      fiber.contextProviders = [returned];
     } else {
-      fiber.contextProviders.push(returned)
+      fiber.contextProviders.push(returned);
     }
-    return reconcileChildren(fiber, returned.children)
+    return reconcileChildren(fiber, returned.children);
   } else {
-    return reconcileChildren(fiber, returned)
+    return reconcileChildren(fiber, returned);
   }
 }
 
-function updateHostComponent (fiber: Fiber): Fiber[] {
+function updateHostComponent(fiber: Fiber): Fiber[] {
   if (!fiber.dom) {
-    fiber.dom = createDom(fiber)
+    fiber.dom = createDom(fiber);
   }
 
-  const elements = fiber?.props?.children ?? []
-  const localDeletions: Fiber[] = reconcileChildren(fiber, elements)
-  return localDeletions
+  const elements = fiber?.props?.children ?? [];
+  const localDeletions: Fiber[] = reconcileChildren(fiber, elements);
+  return localDeletions;
 }
 
-function reconcileChildren (wipFiber: Fiber, node: TreecatNode): Fiber[] {
-  let index: number = 0
-  let oldFiber: Fiber | null = wipFiber?.alternate?.child ?? null
-  let prevSibling: Fiber | null = null
-  const deletions: Fiber[] = []
-  const elements: TreecatElement[] = 'length' in node ? node : [node]
+function reconcileChildren(wipFiber: Fiber, node: TreecatNode): Fiber[] {
+  let index = 0;
+  let oldFiber: Fiber | null = wipFiber?.alternate?.child ?? null;
+  let prevSibling: Fiber | null = null;
+  const deletions: Fiber[] = [];
+  const elements: TreecatElement[] = 'length' in node ? node : [node];
 
   while (index < elements.length || oldFiber !== null) {
-    const element = elements[index]
-    let newFiber: Fiber | null = null
+    const element = elements[index];
+    let newFiber: Fiber | null = null;
     // eslint-disable-next-line eqeqeq
-    const sameType = oldFiber && element && element.type == oldFiber.type
+    const sameType = oldFiber && element && element.type == oldFiber.type;
 
     if (sameType) {
       newFiber = {
@@ -82,8 +82,8 @@ function reconcileChildren (wipFiber: Fiber, node: TreecatNode): Fiber[] {
         effectTag: 'UPDATE',
         effects: [],
         effectCleanups: [],
-        contextProviders: []
-      }
+        contextProviders: [],
+      };
     }
 
     if (element && !sameType) {
@@ -93,27 +93,30 @@ function reconcileChildren (wipFiber: Fiber, node: TreecatNode): Fiber[] {
         effectTag: 'PLACEMENT',
         effects: [],
         effectCleanups: [],
-        contextProviders: []
-      }
+        contextProviders: [],
+      };
     }
 
     if (oldFiber && !sameType) {
-      oldFiber.effectTag = 'DELETION'
-      deletions.push(oldFiber)
+      oldFiber.effectTag = 'DELETION';
+      deletions.push(oldFiber);
     }
 
     if (oldFiber) {
-      oldFiber = oldFiber.sibling ?? null
+      oldFiber = oldFiber.sibling ?? null;
     }
     if (index === 0) {
-      wipFiber.child = newFiber ?? undefined
+      wipFiber.child = newFiber ?? undefined;
     } else {
-      prevSibling!.sibling = newFiber ?? undefined
+      // We use a null assertion here becasue if index > 0 we have assigned something
+      // to prevSibling
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      prevSibling!.sibling = newFiber ?? undefined;
     }
 
-    prevSibling = newFiber
-    index++
+    prevSibling = newFiber;
+    index++;
   }
 
-  return deletions
+  return deletions;
 }

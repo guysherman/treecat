@@ -1,88 +1,89 @@
-import { Fiber } from '../Fiber'
-import { Hook } from '../Hook'
-import { RendererContext } from '../RendererContext'
-import { createHook } from './useReducer'
+import { Fiber } from '../Fiber';
+import { Hook } from '../Hook';
+import { RendererContext } from '../RendererContext';
+import { createHook } from './useReducer';
 
 describe('useReducer', () => {
   it('should throw if RendererContext is broken', () => {
     const getContextBroken = () => {
       return {
-        wipFiber: {}
-      } as RendererContext
-    }
+        wipFiber: {},
+      } as RendererContext;
+    };
 
-    const useReducer = createHook(getContextBroken)
+    const useReducer = createHook(getContextBroken);
 
-    expect(() => useReducer((state, action) => state + (action as number), 0)).toThrow()
-  })
+    expect(() => useReducer((state, action) => state + (action as number), 0)).toThrow();
+  });
 
   it('should not throw if RendererContext is good', () => {
     const getContext = () => {
       return {
         wipFiber: {
           hookIndex: 0,
-          hooks: [] as Hook[]
-        }
-      } as RendererContext
-    }
+          hooks: [] as Hook[],
+        },
+      } as RendererContext;
+    };
 
-    const useReducer = createHook(getContext)
-    useReducer((state, action) => state + action, 23)
-  })
+    const useReducer = createHook(getContext);
+    useReducer((state, action) => state + action, 23);
+  });
 
   it('should return a state and a dispatch function', () => {
     const getContext = () => {
       return {
         wipFiber: {
           hookIndex: 0,
-          hooks: [] as Hook[]
-        }
-      } as RendererContext
-    }
+          hooks: [] as Hook[],
+        },
+      } as RendererContext;
+    };
 
-    const useReducer = createHook(getContext)
-    const [state, func] = useReducer((state, action) => state + action, 23)
-    expect(state).toBe(23)
-    expect(typeof func).toEqual('function')
-  })
+    const useReducer = createHook(getContext);
+    const [state, func] = useReducer((state, action) => state + action, 23);
+    expect(state).toBe(23);
+    expect(typeof func).toEqual('function');
+  });
 
   it('should call reducer with previous state and supplied action', () => {
     const getContext = () => {
       return {
         wipFiber: {
           hookIndex: 0,
-          hooks: [] as Hook[]
-        }
-      } as RendererContext
-    }
+          hooks: [] as Hook[],
+        },
+      } as RendererContext;
+    };
 
-    const reducer = jest.fn()
+    const reducer = jest.fn();
 
-    const useReducer = createHook(getContext)
-    const [state, func] = useReducer(reducer, 23)
-    expect(state).toBe(23)
+    const useReducer = createHook(getContext);
+    const [state, func] = useReducer(reducer, 23);
+    expect(state).toBe(23);
 
-    func(24)
-    expect(reducer).toBeCalledWith(23, 24)
-    expect(typeof func).toEqual('function')
-  })
+    func(24);
+    expect(reducer).toBeCalledWith(23, 24);
+    expect(typeof func).toEqual('function');
+  });
 
   it('calling the hook multiple times per frame should return different state/dispatch pairs', () => {
     const getContext = () => {
       return {
         wipFiber: {
           hookIndex: 0,
-          hooks: [] as Hook[]
-        }
-      } as RendererContext
-    }
+          hooks: [] as Hook[],
+        },
+      } as RendererContext;
+    };
 
-    const useReducer = createHook(getContext)
-    const [state, func] = useReducer<number[]>((state, action) => [...state, (action as number)], [])
-    const [state2, func2] = useReducer<number>((state, action) => state + (action as number), 0)
-    expect((state as any) === (state2 as any)).toBe(false)
-    expect(func === func2).toBe(false)
-  })
+    const useReducer = createHook(getContext);
+    const [state, func] = useReducer<number[]>((state, action) => [...state, action as number], []);
+    const [state2, func2] = useReducer<number>((state, action) => state + (action as number), 0);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((state as any) === (state2 as any)).toBe(false);
+    expect(func === func2).toBe(false);
+  });
 
   test('calling the hook for a new frame should return updated state', () => {
     const fib1: Fiber = {
@@ -90,8 +91,8 @@ describe('useReducer', () => {
       hooks: [] as Hook[],
       props: { children: [] },
       effects: [],
-      effectCleanups: []
-    }
+      effectCleanups: [],
+    };
 
     const fib2 = {
       hookIndex: 0,
@@ -99,8 +100,8 @@ describe('useReducer', () => {
       alternate: fib1,
       props: { children: [] },
       effects: [],
-      effectCleanups: []
-    }
+      effectCleanups: [],
+    };
 
     const fib3 = {
       hookIndex: 0,
@@ -108,29 +109,29 @@ describe('useReducer', () => {
       alternate: fib2,
       props: { children: [] },
       effects: [],
-      effectCleanups: []
-    }
+      effectCleanups: [],
+    };
     const context: RendererContext = {
-      wipFiber: fib1
-    } as RendererContext
+      wipFiber: fib1,
+    } as RendererContext;
 
     const getContext = () => {
-      return context
-    }
-    const useReducer = createHook(getContext)
+      return context;
+    };
+    const useReducer = createHook(getContext);
 
-    const [state, func] = useReducer<number[]>((state, action) => [...state, (action as number)], [])
-    expect(state).toEqual([])
-    expect(fib1.hookIndex).toBe(1)
-    func(42)
+    const [state, func] = useReducer<number[]>((state, action) => [...state, action as number], []);
+    expect(state).toEqual([]);
+    expect(fib1.hookIndex).toBe(1);
+    func(42);
 
-    context.wipFiber = fib2
-    const [state2, func2] = useReducer<number[]>((state, action) => [...state, (action as number)], [])
-    expect(state2).toEqual([42])
-    func2(84)
+    context.wipFiber = fib2;
+    const [state2, func2] = useReducer<number[]>((state, action) => [...state, action as number], []);
+    expect(state2).toEqual([42]);
+    func2(84);
 
-    context.wipFiber = fib3
-    const [state3] = useReducer<number[]>((state, action) => [...state, (action as number)], [])
-    expect(state3).toEqual([42, 84])
-  })
-})
+    context.wipFiber = fib3;
+    const [state3] = useReducer<number[]>((state, action) => [...state, action as number], []);
+    expect(state3).toEqual([42, 84]);
+  });
+});
