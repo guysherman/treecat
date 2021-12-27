@@ -44,6 +44,7 @@ export const useReducer = createUseReducer(getContext);
 export function createRootScreen(): blessed.Widgets.Screen {
   const rootScreen: blessed.Widgets.Screen = blessed.screen({
     sendFocus: true,
+    smartCSR: true,
   });
   return rootScreen;
 }

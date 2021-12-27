@@ -5,6 +5,7 @@ import { updateProps } from './baseComponents';
 
 // eslint-disable-next-line no-unused-vars
 export function createDom(fiber: Fiber): blessed.Widgets.BlessedElement | undefined {
+  console.error('create', { type: fiber.type });
   let el: blessed.Widgets.BlessedElement;
   try {
     switch (fiber.type) {
@@ -124,6 +125,9 @@ export function commitWork(fiber: Fiber | null) {
   // above handles it, and TypeScript is a bit dumb
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   let domParentFiber: Fiber = fiber!.parent as Fiber;
+  // If you have a bunch of function components between host components
+  // in the tree, this loop compacts that space, so that host components
+  // get added to their real dom parent.
   while (!domParentFiber?.dom) {
     domParentFiber = domParentFiber.parent as Fiber;
     if (!domParentFiber) {
@@ -176,7 +180,7 @@ function updateDom(fiber: Fiber, domParent: blessed.Widgets.Node) {
 }
 
 function replaceWithNew(fiber: Fiber, domParent: blessed.Widgets.Node) {
-  if (fiber?.alternate?.dom && fiber.dom) {
+  if (fiber?.alternate?.dom && fiber?.dom) {
     const childNodes: blessed.Widgets.Node[] = [...fiber.alternate.dom.children];
 
     for (let i = 0; i < childNodes.length; i++) {

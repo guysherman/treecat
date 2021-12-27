@@ -41,7 +41,13 @@ const propUpdaters: Record<string, Record<string, PropUpdater>> = {
 };
 
 export function updateProps(fiber: Fiber): boolean {
-  if (fiber?.alternate?.dom && fiber.dom) {
+  // Special case for TEXT_ELEMENT fibers, as we need to find their parent dom
+  // element and set the content
+  if (fiber.type === 'TEXT_ELEMENT') {
+    if (fiber.parent?.dom) {
+      (fiber.parent.dom as blessed.Widgets.BlessedElement).setContent(fiber.props.nodeValue);
+    }
+  } else if (fiber?.alternate?.dom && fiber.dom) {
     if (!isUpdatable(fiber)) {
       console.error('Potential Missing Props:', { props: fiber.props });
       return false;

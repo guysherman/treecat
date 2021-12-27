@@ -51,7 +51,11 @@ function updateFunctionComponent(fiber: Fiber, setWipFiber: (fiber: Fiber) => vo
 
 function updateHostComponent(fiber: Fiber): Fiber[] {
   if (!fiber.dom) {
-    fiber.dom = createDom(fiber);
+    if (fiber.effectTag === 'PLACEMENT') {
+      fiber.dom = createDom(fiber);
+    } else {
+      fiber.dom = fiber?.alternate?.dom;
+    }
   }
 
   const elements = fiber?.props?.children ?? [];

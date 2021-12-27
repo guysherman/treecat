@@ -13,7 +13,9 @@ export const updatableProps: Record<string, PropUpdater> = {
   },
   items: (list, value) => {
     if (value !== undefined) {
-      (list as blessed.Widgets.ListElement).setItems(value as blessed.Widgets.BlessedElement[]);
+      (list as blessed.Widgets.ListElement).clearItems();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (list as blessed.Widgets.ListElement).setItems(value as any);
     } else {
       (list as blessed.Widgets.ListElement).setItems([]);
     }
