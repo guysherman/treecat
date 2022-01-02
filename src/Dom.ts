@@ -5,7 +5,6 @@ import { updateProps } from './baseComponents';
 
 // eslint-disable-next-line no-unused-vars
 export function createDom(fiber: Fiber): blessed.Widgets.BlessedElement | undefined {
-  console.error('create', { type: fiber.type });
   let el: blessed.Widgets.BlessedElement;
   try {
     switch (fiber.type) {
