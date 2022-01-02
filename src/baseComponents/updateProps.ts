@@ -116,9 +116,5 @@ function getChangedProps(fiber: Fiber): [string, unknown][] {
   const prevPropKeys = prevProps.map(([key]) => key);
   const currentProps = getProps(fiber.props);
   const sharedProps = currentProps.filter(([key]) => prevPropKeys.includes(key));
-  const changedProps = sharedProps.filter((entry) =>
-    isChanged(entry, prevProps.find((prop) => prop[0] === entry[0]) ?? ['', '']),
-  );
-
-  return changedProps;
+  return sharedProps;
 }
