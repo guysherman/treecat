@@ -22,6 +22,7 @@ export {
   Reducer,
   FC,
 } from './types';
+export { createContext } from './Context';
 export { blessed };
 
 const context: RendererContext = {
