@@ -47,13 +47,15 @@ describe('useReducer', () => {
   });
 
   it('should call reducer with previous state and supplied action', () => {
+    const rendererContext = {
+      wipFiber: {
+        hookIndex: 0,
+        hooks: [] as Hook[],
+      },
+    } as RendererContext;
+
     const getContext = () => {
-      return {
-        wipFiber: {
-          hookIndex: 0,
-          hooks: [] as Hook[],
-        },
-      } as RendererContext;
+      return rendererContext;
     };
 
     const reducer = jest.fn();
@@ -65,6 +67,7 @@ describe('useReducer', () => {
     func(24);
     expect(reducer).toBeCalledWith(23, 24);
     expect(typeof func).toEqual('function');
+    expect(rendererContext.nextUnitOfWork).toBeTruthy();
   });
 
   it('calling the hook multiple times per frame should return different state/dispatch pairs', () => {
