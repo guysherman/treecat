@@ -25,16 +25,20 @@ export {
 export { createContext } from './Context';
 export { blessed };
 
-const context: RendererContext = {
-  nextUnitOfWork: null,
-  wipRoot: null,
-  wipFiber: null,
-  currentRoot: null,
-  blessedRoot: null,
-  deletions: [],
-  shouldStopWorkloop: false,
-  workLoopResolve: null,
+const createRendererContext = () => {
+  return {
+    nextUnitOfWork: null,
+    wipRoot: null,
+    wipFiber: null,
+    currentRoot: null,
+    blessedRoot: null,
+    deletions: [],
+    shouldStopWorkloop: false,
+    workLoopResolve: null,
+  };
 };
+
+let context: RendererContext;
 
 export const useState = createUseState(getContext);
 export const useEffect = createUseEffect(getContext);
@@ -51,6 +55,7 @@ export function createRootScreen(): blessed.Widgets.Screen {
 }
 
 export function render(element: TreecatElement, container: blessed.Widgets.Screen) {
+  context = createRendererContext();
   context.blessedRoot = container;
   context.wipRoot = {
     hookIndex: 0,
