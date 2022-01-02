@@ -5,12 +5,12 @@
   "files": [
     "dist/"
   ],
-  "version": "0.0.3",
+  "version": "0.1.0",
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "tsc --project ./tsconfig.json",
     "typecheck": "tsc --project ./tsconfig.json --noemit",
-    "test": "jest --config jest.config.js --passWithNoTests --silent",
+    "test": "jest --config jest.config.js --passWithNoTests",
     "test-watch": "jest --testPathPattern=src/ --testPathIgnorePatterns=dist/ --watch --runInBand --no-cache",
     "lint": "eslint src/**/*.ts"
   },

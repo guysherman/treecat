@@ -88,7 +88,15 @@ export function createDom(fiber: Fiber): blessed.Widgets.BlessedElement | undefi
         if (fiber?.parent?.dom) {
           const parentElement = fiber.parent.dom as blessed.Widgets.BlessedElement;
           if (parentElement) {
-            parentElement.setContent(fiber.props.nodeValue);
+            switch (fiber.parent.type) {
+              case 'textarea':
+              case 'textbox':
+                (parentElement as blessed.Widgets.TextareaElement).setValue(fiber.props.nodeValue);
+                break;
+              default:
+                parentElement.setContent(fiber.props.nodeValue);
+                break;
+            }
           }
           return;
         } else {
