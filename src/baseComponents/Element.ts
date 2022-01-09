@@ -1,6 +1,6 @@
 import { PropUpdater } from './updateProps';
 import * as blessed from 'blessed';
-import { updatableProps as nodeProps } from './Node';
+import { noOp, updatableProps as nodeProps } from './Node';
 
 export const updatableProps: Record<string, PropUpdater> = {
   ...nodeProps,
@@ -16,9 +16,9 @@ export const updatableProps: Record<string, PropUpdater> = {
   height: (node, value) => ((node as blessed.Widgets.BlessedElement).height = (value as string | number) ?? 0),
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   tags: () => {},
-  border: (node, value) =>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ((node as blessed.Widgets.BlessedElement).border = (value as any) ?? { type: 'line' as const }),
+  border: (node, value) => noOp(node, value),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //((node as blessed.Widgets.BlessedElement).border = (value as any) ?? { type: 'line' as const }),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   style: (node, value) => ((node as blessed.Widgets.BlessedElement).style = (value as any) ?? {}),
   label: (node, value) => {
